@@ -1,5 +1,7 @@
 # todo initialize program
 # todo get user controls set up
+# todo initialize the player
+# todo initialize all the emotions, enemies, and moves
 
 import pygame
 import sys
