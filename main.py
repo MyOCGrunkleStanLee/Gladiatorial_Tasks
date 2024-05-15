@@ -7,8 +7,8 @@ import pygame
 import sys
 
 from game_state_manager import GameStateManager
-from GameStart.start_task import TaskTree
-from Tasks.exercise import Exercise
+from start.start_screen import TaskTree
+from planning.planning_screen import Exercise
 
 # final vars
 WIDTH, HEIGHT = 1280, 620
