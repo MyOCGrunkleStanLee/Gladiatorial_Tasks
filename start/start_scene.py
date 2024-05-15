@@ -16,7 +16,4 @@ class StartScene(GenericScene):
 
         # change gamestate on click
         if start_button.clicked:
-            print("clicked")
-            print(self.game_state_object.currentState)
-            self.game_state_object.currentState = "planning"
-            print(self.game_state_object.currentState)
+            self.game_state_object.current_state = "planning"

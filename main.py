@@ -1,50 +1,47 @@
-# todo initialize program
-# todo get user controls set up
-# todo initialize the player
-# todo initialize all the emotions, enemies, and moves
-
 import pygame
 import sys
 
-from game_state_manager import GameStateManager
-from start.start_screen import TaskTree
-from planning.planning_screen import Exercise
+from utilities.generic_scene import GenericScene
+from start.start_scene import StartScene
+from planning.planning_scene import PlanningScene
+from combat.combat_scene import CombatScene
+from do_it_irl.do_it_irl_scene import DoItIRLScene
+from utilities.game_state_object import GameStateObject
 
 # final vars
 WIDTH, HEIGHT = 1280, 620
 FPS = 60
 
 
-class Game:
-    def __init__(self):
-        pygame.init()
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        self.clock = pygame.time.Clock()
+def start_game():
+    pygame.init()
 
-        # handles different state
-        self.gameStateManager = GameStateManager("task_tree")
-        # instances of our states
-        self.task_tree_state = TaskTree(self.screen, self.gameStateManager)
-        self.exercise_state = Exercise(self.screen, self.gameStateManager)
-        # dict of all possible state
-        self.states = {"task_tree": self.task_tree_state, "exercise": self.exercise_state}
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    clock = pygame.time.Clock()
+    game_state = GameStateObject(None)
 
-    def run(self):
-        # this is the main game loop
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+    scenes: dict[str, GenericScene] = {
+        "start": StartScene(screen, game_state),
+        "planning": PlanningScene(screen, game_state),
+        "combat": CombatScene(screen, game_state),
+        "do_it_irl": DoItIRLScene(screen, game_state),
+    }
+    game_state.current_state = "start"
+    
 
-            # this allows to switch between states
-            self.states[self.gameStateManager.get_state()].run()
-            
-        
-            pygame.display.update()
-            self.clock.tick(FPS)
+    # this is the main game loop
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        # this allows to switch between states
+        scenes[game_state.current_state].game_body_loop()
+
+        pygame.display.update()
+        clock.tick(FPS)
 
 
 if __name__ == "__main__":
-    game = Game()
-    game.run()
+    start_game()
