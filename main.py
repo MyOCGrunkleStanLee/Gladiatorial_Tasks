@@ -28,7 +28,7 @@ def start_game():
         "select_starter": SelectStarterScene(screen, game_state, player_info),
         "planning": PlanningScene(screen, game_state),
         "combat": CombatScene(screen, game_state, player_info),
-        "do_it_irl": DoItIRLScene(screen, game_state),
+        "do_it_irl": DoItIRLScene(screen, game_state, player_info),
     }
     game_state.current_state = "start"
     
