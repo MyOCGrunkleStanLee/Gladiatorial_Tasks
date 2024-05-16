@@ -13,5 +13,12 @@ class GenericScene:
         self.game_state_object = game_state_object
         self.player_info = player_info
 
+        self.create_components()
+
+    def create_components(self) -> None:
+        """A method called during instantiation to create components like buttons. Is called once in __init__"""
+        pass
+
     def game_body_loop(self) -> None:
+        """Gets called once every main game loop"""
         pass
