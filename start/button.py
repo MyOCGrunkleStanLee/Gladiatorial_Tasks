@@ -10,9 +10,10 @@ class Button():
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
+        self.activated = False
 
     def draw(self):
-        self.clicked = False
+        self.activated = False
 
         # get mouse pos
         pos = pygame.mouse.get_pos()
@@ -21,6 +22,12 @@ class Button():
         if self.rect.collidepoint(pos):
             if pygame.mouse.get_pressed()[0] and self.clicked == False:
                 self.clicked = True
+            # button is only activated when mouse is released on top of button after left clicking
+            if self.clicked and not pygame.mouse.get_pressed()[0]:
+                self.activated = True
+                self.clicked = False
+        else:
+            self.clicked = False
 
         self.screen.blit(self.image, (self.rect.x, self.rect.y))
 
