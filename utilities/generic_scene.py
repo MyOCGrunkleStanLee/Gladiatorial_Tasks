@@ -10,6 +10,7 @@ class GenericScene:
     def __init__(self, display: pygame.Surface, game_state_object: GameStateObject, player_info: Player = None) -> None:
         """Initializes the object with a PyGame surface to render and data from the game session"""
         self.display = display
+        self.WIDTH, self.HEIGHT = self.display.get_size()
         self.game_state_object = game_state_object
         self.player_info = player_info
 

@@ -17,6 +17,7 @@ FPS = 60
 def start_game():
     pygame.init()
 
+    pygame.display.set_caption("Gladitorial Tasks")
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     game_state = GameStateObject(None)
