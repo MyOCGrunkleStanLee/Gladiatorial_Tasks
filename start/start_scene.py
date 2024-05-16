@@ -3,7 +3,6 @@
 import pygame
 from start.button import Button
 from utilities.generic_scene import GenericScene
-from combat.player import Player
 
 class StartScene(GenericScene):
 
@@ -15,6 +14,6 @@ class StartScene(GenericScene):
         start_button = Button(self.display, 100, 100, start_img, 0.4)
         start_button.draw()
 
-        # change gamestate on click
+        # change game state on click
         if start_button.clicked:
-            self.game_state_object.current_state = "planning"
+            self.game_state_object.current_state = "select_starter"

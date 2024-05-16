@@ -1,8 +1,5 @@
 import pygame
 from utilities.generic_scene import GenericScene
-from combat import Combat
-import main
-
 
 class CombatScene(GenericScene):
 
@@ -11,7 +8,6 @@ class CombatScene(GenericScene):
 
 
     def game_body_loop(self) -> None:
-
-        pass
+        print(self.player_info.emotions[0].name)
 
 

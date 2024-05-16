@@ -1,7 +1,6 @@
 import random
 import enemies
 
-
 def randomly_select_enemy():
     return random.choice(enemies.enemies)
 
@@ -27,7 +26,6 @@ class Combat:
 
         for i in range(len(opponents) - number):
             self.enemies.append(randomly_select_enemy())
-
 
     # todo we need to get the user to select a move for each of their emotions
     def select_attack(self):

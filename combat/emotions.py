@@ -1,5 +1,5 @@
 # todo create a framework of what emotions will look like
-import moves
+
 """
 stats:
     motivation (hp)
@@ -21,7 +21,8 @@ class Emotion:
         self.learned_moves = []
         self.learnable_moves = []
 
-    def initialize_emotion(self, name, motivation, effectiveness, resilience, typing, experience_factor, learned_moves, learnable_moves):
+    def initialize_emotion(self, name, motivation, effectiveness, resilience, typing, experience_factor, learned_moves,
+                           learnable_moves):
         """
         this will be used for each emotions basic starting stats at the start of the game launch
         :param name: the name of the character
@@ -56,8 +57,12 @@ class Emotion:
 # example of what an initialized emotion will look like
 anger = Emotion()
 anger.initialize_emotion("Anger", 30, 50, 10, "anger", 1,
-                         [moves.punch], [])
+                         [], [])
 
+# happiness
+happiness = Emotion()
+happiness.initialize_emotion("Happiness", 30, 50, 10, "joy", 1,
+                             [], [])
 # embarrassment
 
 
