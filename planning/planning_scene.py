@@ -24,7 +24,7 @@ class PlanningScene(GenericScene):
             400, #length
         )  # These measurements create a centered rectangle for a screen WIDTH, HEIGHT = 1280, 620
 
-        self.planning_input_box = InputBox(self.display, *CENTERED_DIMENSIONS)
+        self.planning_input_box = InputBox(self.display, *CENTERED_DIMENSIONS, self.prompt_list[0])
 
     def game_body_loop(self) -> None:
         self.display.fill("blue")
