@@ -25,8 +25,8 @@ def start_game():
 
     scenes: dict[str, GenericScene] = {
         "start": StartScene(screen, game_state),
+        "planning": PlanningScene(screen, game_state, player_info),
         "select_starter": SelectStarterScene(screen, game_state, player_info),
-        "planning": PlanningScene(screen, game_state),
         "combat": CombatScene(screen, game_state, player_info),
         "do_it_irl": DoItIRLScene(screen, game_state, player_info),
     }
@@ -39,9 +39,10 @@ def start_game():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.KEYDOWN:
+                game_state.keydown_event = event
 
-        # this allows to switch between states
-        # todo when scenes switch if button is in same position it gets clicked instantly when you click the first one
+        # this allows to switch between scenes
         scenes[game_state.current_state].game_body_loop()
 
         pygame.display.update()

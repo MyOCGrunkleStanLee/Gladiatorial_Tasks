@@ -24,9 +24,23 @@ class PlanningScene(GenericScene):
             400, #length
         )  # These measurements create a centered rectangle for a screen WIDTH, HEIGHT = 1280, 620
 
-        self.planning_input_box = InputBox(self.display, *CENTERED_DIMENSIONS, self.prompt_list[0])
+        self.input_box = InputBox(self.display, *CENTERED_DIMENSIONS, self.prompt_list[0])
 
     def game_body_loop(self) -> None:
         self.display.fill("blue")
 
-        self.planning_input_box.draw()
+        keydown_event = self.game_state_object.keydown_event
+
+        if keydown_event != None:
+            if keydown_event.key == pygame.K_BACKSPACE:
+                self.input_box.user_text = self.input_box.user_text[:-1]
+            else:
+                self.input_box.user_text += keydown_event.unicode
+
+            self.game_state_object.keydown_event = None
+            
+
+        self.input_box.draw()
+    
+    def next_screen(self) -> None:
+        self.game_state_object.current_state = "select_starter"
