@@ -27,27 +27,41 @@ class DoItIRLScene(GenericScene):
         self.instruction_image = None
         self.initialized = False
 
+
     def create_components(self) -> None:
+        #-------------------------------------------------#
+        # position of components
+        self.start_button_pos = (self.WIDTH//2-100, 200)
+        self.finish_button_pos = (self.WIDTH//2+100, 200)
+        self.instruction_image_pos = (self.WIDTH/2, 400)
+        self.timer_pos = (self.WIDTH//2, 70)
+        #-------------------------------------------------#
+
         # start button
         start_img = pygame.image.load("do_it_irl/assets/start_button.png").convert_alpha()
-        self.starter_button = Button(self.display, self.WIDTH//2-100, 200, start_img, 0.8)
+        self.starter_button = Button(self.display, self.start_button_pos[0], 
+                                     self.start_button_pos[1], start_img, 0.8)
         # finish button
         finish_img = pygame.image.load("do_it_irl/assets/finish_button.png").convert_alpha()
-        self.finish_button = Button(self.display, self.WIDTH//2+100, 200, finish_img, 0.8)
+        self.finish_button = Button(self.display, self.finish_button_pos[0], 
+                                    self.finish_button_pos[1], finish_img, 0.8)
+
 
     def game_body_loop(self) -> None:
         # init task and timer once
         if not self.initialized:
             self.initialize()
             self.initialized = True
-
+        
+        # start timer
         if self.starter_button.activated:
             self.timer.start()
-            
-
+        
+        # create the instruction image based on the taskid
         instruction_image_path = "do_it_irl/assets/" + self.task + "-instruction.png"
         self.instruction_image = pygame.image.load(instruction_image_path)
-        self.instruction_image_rect = self.instruction_image.get_rect(center=(self.WIDTH/2, 400))
+        self.instruction_image_rect = self.instruction_image.get_rect(
+                    center=(self.instruction_image_pos[0], self.instruction_image_pos[1]))
 
         self.draw()
         
@@ -56,7 +70,8 @@ class DoItIRLScene(GenericScene):
         # set the task id
         self.task = self.player_info.task
         # set up timer
-        self.timer = Timer(self.task_parameters[self.task], (self.WIDTH//2, 70), 70)
+        self.timer = Timer(self.task_parameters[self.task], self.timer_pos, 70)
+
 
     def draw(self):
         self.display.fill("violet")
