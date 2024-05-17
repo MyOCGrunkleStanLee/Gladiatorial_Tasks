@@ -1,7 +1,7 @@
 # todo design an enemy framework as well
 # i am thinking that we can use the same framework we use for emotions and just add a tag
 # or we could just create a new system for it
-import moves
+import combat.moves
 class Enemy:
     def __init__(self):
         self.name = ""
@@ -12,6 +12,8 @@ class Enemy:
         self.level = 1
         self.learned_moves = []
         self.experience_value = 0
+        self.target = None
+        self.attack = None
 
     def initialize_enemy(self, name, motivation, effectiveness, resilience, typing, experience_value, learned_moves):
         """
@@ -35,11 +37,11 @@ class Enemy:
 
 
 # frustration
-frustration = Enemy()
-frustration.initialize_enemy("frustration", 10, 50, 3, "anger",
-                             5, moves.punch)
+Frustration = Enemy()
+Frustration.initialize_enemy("frustration", 10, 50, 3, "anger",
+                             5, [combat.moves.punch])
 # procrastination
 # distraction
 # pain
 # excuse
-enemies = [frustration]
+enemies = [Frustration]
