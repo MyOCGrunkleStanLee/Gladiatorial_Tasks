@@ -31,7 +31,7 @@ class StartScene(GenericScene):
 
         # change game state on click
         if self.start_button.activated:
-            self.game_state_object.current_state = "select_starter"
+            self.game_state_object.current_state = "planning"
 
         # quit game if quit button clicked
         if self.quit_button.activated:
