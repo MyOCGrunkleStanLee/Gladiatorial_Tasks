@@ -6,6 +6,8 @@ from GameStart.select_starter import SelectStarterScene
 from planning.planning_scene import PlanningScene
 from combat.combat_scene import CombatScene
 from do_it_irl.do_it_irl_scene import DoItIRLScene
+from start.select_task_scene import SelectTaskScene
+from start.task_scene import TaskScene
 from utilities.game_state_object import GameStateObject
 from utilities.player_info import Player
 
@@ -25,9 +27,11 @@ def start_game():
 
     scenes: dict[str, GenericScene] = {
         "start": StartScene(screen, game_state),
+        "select_task": SelectTaskScene(screen, game_state, player_info),
         "planning": PlanningScene(screen, game_state, player_info),
         "select_starter": SelectStarterScene(screen, game_state, player_info),
         "combat": CombatScene(screen, game_state, player_info),
+        "task_scene": TaskScene(screen, game_state, player_info),
         "do_it_irl": DoItIRLScene(screen, game_state, player_info),
     }
     game_state.current_state = "start"
