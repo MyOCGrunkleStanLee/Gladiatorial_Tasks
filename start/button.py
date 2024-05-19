@@ -40,7 +40,6 @@ class Button():
             self.hover = False
 
         self.screen.blit(self.image, self.rect)
-        pygame.draw.rect(self.screen, (0, 0, 0), self.rect, 1)
 
     def set_new_image(self, image):
         width = image.get_width()
