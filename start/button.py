@@ -2,14 +2,17 @@ import pygame
 
 
 class Button():
-    def __init__(self, screen, x, y, image, scale):
+    def __init__(self, screen, x, y, image, scale, positioning="center"):
         self.screen = screen
+        self.x = x
+        self.y = y
         self.scale = scale
+        self.positioning = positioning
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
-        self.rect = self.image.get_rect(center=(x, y))
-        self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.init_rect()
+        self.mask = pygame.mask.from_surface(self.image, threshold=0)
         self.clicked = False
         self.activated = False
         self.hover = False
@@ -42,8 +45,17 @@ class Button():
         self.screen.blit(self.image, self.rect)
 
     def set_new_image(self, image):
+        # use only for new images that are the same shape as the last image!
+
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * self.scale), int(height * self.scale)))
         self.rect = self.image.get_rect(center=self.rect.center)
-        self.mask = pygame.mask.from_surface(self.image)
+        #self.mask = pygame.mask.from_surface(self.image)
+
+    
+    def init_rect(self):
+        if self.positioning=="center":
+            return self.image.get_rect(center=(self.x, self.y))
+        elif self.positioning == "topleft":
+            return self.image.get_rect(topleft=(self.x, self.y)) 
