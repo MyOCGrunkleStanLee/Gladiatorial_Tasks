@@ -7,11 +7,13 @@ stats:
     resilience (defense)
     typing
 """
+import pygame
 
 
 class Emotion:
-    def __init__(self):
-        self.name = ""
+    def __init__(self, name, image_path):
+        self.name = name
+        self.image_path = image_path
         self.motivation = 0
         self.effectiveness = 0
         self.resilience = 0
@@ -19,7 +21,7 @@ class Emotion:
         self.level = 1
         self.experience_factor = 0
         self.learned_moves = []
-        self.learnable_moves = []
+
 
     def initialize_emotion(self, name, motivation, effectiveness, resilience, typing, experience_factor, learned_moves,
                            learnable_moves):
@@ -44,35 +46,7 @@ class Emotion:
         self.learned_moves = learned_moves
         self.learnable_moves = learnable_moves
 
-    def teach_move(self, move: object):
-        self.learned_moves.append(move)
 
-    def forget_move(self, move: object):
-        if move not in self.learned_moves:
-            raise "Move not in learned moves!"
-        self.learned_moves.remove(move)
-
-
-# anger
-# example of what an initialized emotion will look like
-anger = Emotion()
-anger.initialize_emotion("Anger", 30, 50, 10, "anger", 1,
-                         [], [])
-
-# happiness
-happiness = Emotion()
-happiness.initialize_emotion("Happiness", 30, 50, 10, "joy", 1,
-                             [], [])
-# embarrassment
-
-
-# calmness
-
-
-# stress
-
-
-# optimism
-
-
-
+    def draw(self, display):
+        # draw the emotion here
+        pass
