@@ -2,8 +2,8 @@ import pygame
 
 
 class Button():
-    def __init__(self, screen, x, y, image, scale, positioning="center"):
-        self.screen = screen
+    def __init__(self, display, x, y, image, scale, positioning="center"):
+        self.display = display
         self.x = x
         self.y = y
         self.scale = scale
@@ -17,7 +17,7 @@ class Button():
         self.activated = False
         self.hover = False
 
-    def draw(self):
+    def draw(self, display):
         self.activated = False
 
         # get mouse pos
@@ -42,7 +42,8 @@ class Button():
             self.clicked = False
             self.hover = False
 
-        self.screen.blit(self.image, self.rect)
+        display.blit(self.image, self.rect)
+
 
     def set_new_image(self, image):
         # use only for new images that are the same shape as the last image!

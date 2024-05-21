@@ -87,5 +87,5 @@ class DoItIRLScene(GenericScene):
         self.display.fill("violet")
         #self.display.blit(self.instruction_image, self.instruction_image_rect)
         self.timer.draw(self.display)
-        self.starter_button.draw()
-        self.finish_button.draw()
+        self.starter_button.draw(self.display)
+        self.finish_button.draw(self.display)

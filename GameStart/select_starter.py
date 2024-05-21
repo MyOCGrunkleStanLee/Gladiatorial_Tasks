@@ -21,9 +21,10 @@ class SelectStarterScene(GenericScene):
         # Title
         self.display.blit(self.text_surface, (self.WIDTH/2-self.text_surface.get_width()/2, 50))
 
-        self.starter_button.draw()
+        self.starter_button.draw(self.display)
 
         # change game state on click
         if self.starter_button.activated:
+            print("asdfja")
             self.player_info.add_emotion(combat.player.happiness)
             self.game_state_object.current_state = "combat"
