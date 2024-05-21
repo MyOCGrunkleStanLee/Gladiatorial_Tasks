@@ -25,5 +25,5 @@ class SelectStarterScene(GenericScene):
 
         # change game state on click
         if self.starter_button.activated:
-            self.player_info.add_emotion(combat.emotions.happiness)
+            self.player_info.add_emotion(combat.player.happiness)
             self.game_state_object.current_state = "combat"

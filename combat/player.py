@@ -1,5 +1,5 @@
 # todo create a framework of what emotions will look like
-
+import combat.moves
 """
 stats:
     motivation (hp)
@@ -38,20 +38,18 @@ class PlayerEmotion(Emotion):
         self.button.draw()
 
         # health bar
-        
-        
 
 
 # anger
 # example of what an initialized emotion will look like
-# anger = PlayerEmotion("Anger", "")
-# anger.initialize_emotion("Anger", 30, 50, 10, "anger", 1,
-#                          [], [])
+anger = PlayerEmotion("Anger", "Assets\\SmallGoldSquare.png", None)
+anger.initialize_emotion("Anger", 30, 50, 10, "anger", 1,
+                        [combat.moves.punch], [])
 
 # # # happiness
-# happiness = PlayerEmotion("Happiness", "")
-# happiness.initialize_emotion("Happiness", 30, 50, 10, "joy", 1,
-#                               [], [])
+happiness = PlayerEmotion("Happiness", "Assets\\SmallGoldSquare.png", None)
+happiness.initialize_emotion("Happiness", 30, 50, 10, "joy", 1,
+                              [combat.moves.punch], [])
 # embarrassment
 
 

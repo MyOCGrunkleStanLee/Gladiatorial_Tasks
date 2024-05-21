@@ -1,6 +1,6 @@
 import random
 import combat.enemies
-
+import math
 
 def randomly_select_enemy():
     print(combat.enemies.enemies)
@@ -56,10 +56,15 @@ class Combat:
         pass
 
     # todo process the attack
-    def process_attack(self, attack, target):
+    def process_attack(self, emotion):
         # todo program type advantages and disadvantages
-        # todo math out the damage from the attack - defense and remove it from players health
-        pass
+        print(emotion.attack.power)
+        attack = emotion.attack
+        print(emotion.effectiveness)
+        effectiveness = emotion.effectiveness
+        print(emotion.target.resilience)
+        target = emotion.target
+        target.motivation -= math.ceil((attack.power * (1 + effectiveness / 100) * (attack.power / target.resilience)))
 
     # todo show animation
     def show_animation(self):
@@ -71,6 +76,12 @@ class Combat:
 
     def select_enemy_target(self, enemy, targets: list):
         enemy.target = random.choice(targets)
+
+    def clean_emotion(self, emotion):
+        self.emotions.remove(emotion)
+
+    def clean_enemies(self, enemy):
+        self.enemies.remove(enemy)
 
     # todo inform the player of the outcome
     def display_combat_info(self):

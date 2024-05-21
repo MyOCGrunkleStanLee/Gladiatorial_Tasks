@@ -16,7 +16,7 @@ class Emotion:
         self.image_path = image_path
         self.motivation = 100
         self.effectiveness = 0
-        self.resilience = 0
+        self.resilience = 1
         self.typing = ""
         self.level = 1
         self.experience_factor = 0

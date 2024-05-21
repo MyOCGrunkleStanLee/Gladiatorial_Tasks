@@ -45,6 +45,7 @@ class CombatUI:
         # attack button
         attack_button_image = pygame.image.load("Assets/NextButton.png").convert_alpha()
         self.attack_button = Button(self.display, 800, 450, attack_button_image, 1)
+        self.back_button = Button(self.display, 800, 550, attack_button_image, 1)
 
 
 
@@ -70,7 +71,7 @@ class CombatUI:
 
         if self.player.button.hover:
             # TODO set hover overlay
-            #self.player.button.set_new_image()
+            # self.player.button.set_new_image()
             pass
 
         if self.player.button.activated:
@@ -87,7 +88,13 @@ class CombatUI:
         # if a move button is selected save in selected_attack
         for i, button in enumerate(self.move_buttons):
             if button.activated:
-                self.selected_attack = attacks[i]
+                if i < len(attacks):
+                    self.selected_attack = attacks[i]
+                    print(self.selected_attack.name)
+                else:
+                    # todo play no no noise here
+                    print("index out of range")
+
 
         # select enemy if an attack is selected
         if self.selected_attack != None:
@@ -99,24 +106,31 @@ class CombatUI:
 
             if self.enemy.button.activated:
                 # store data about attack
+                print("enemy button clicked")
                 self.player.target = self.enemy
                 self.player.attack = self.selected_attack
-                self.current_phase = "start_attack"
+                return [self.player.attack, self.player.target]
 
         # draw stuff
         self.draw_emotions()
         self.draw_attack_overlay(attacks)
 
-
     def start_attack(self):
         finished = False
         if self.attack_button.activated:
-            print("data returned")
-            finished =  True
+            self.attack_button.activated = False
+            print("going forward")
+            return True
+
+        if self.back_button.activated:
+            self.back_button.activated = False
+            print("undoing")
+            return False
 
         # draw stuff
         self.draw_emotions()
         self.attack_button.draw()
+        self.back_button.draw()
 
         return finished
 
@@ -133,7 +147,7 @@ class CombatUI:
         self.display.blit(self.overlay_img, self.overlay_rect)
         # attack text
         for attack_str, rect in zip(attacks, self.attack_rects):
-            text_surface = self.font.render(attack_str, True, (255, 255, 255))
+            text_surface = self.font.render(attack_str.name, True, (255, 255, 255))
             text_rect = text_surface.get_rect(center=rect.center)
             self.display.blit(text_surface, text_rect)
         # buttons
