@@ -30,7 +30,7 @@ class TaskScene(GenericScene):
 
 
         self.display.blit(self.background_img, (0, 0))
-        self.next_button.draw()
+        self.next_button.draw(self.display)
         self.mark_finished_tasks()
         
 

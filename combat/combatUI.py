@@ -10,8 +10,9 @@ from typing import List
 class CombatUI:
     def __init__(self, display, players: List[PlayerEmotion], enemies: List[EnemyEmotion]):
         # get the player and enemy from list from somewhere else
-        self.player = PlayerEmotion("Happiness", "Assets/LargeGoldSquare.png", display)
-        self.enemy = EnemyEmotion("Frustration", "Assets/LargeGoldSquare.png", display)
+        
+        self.player = players[0]
+        self.enemy = enemies[0]
         self.display = display
         self.current_phase = "idle"
         self.background_img = pygame.image.load("Assets/CombatScreen.png").convert_alpha()
@@ -19,6 +20,7 @@ class CombatUI:
 
         # important for combat
         self.selected_attack = None
+        self.data = None
 
 
     def create_components(self):
@@ -57,11 +59,11 @@ class CombatUI:
             case "idle":
                 self.idle()
             case "select_attack":
-                attacks = ["scratch", "heal", "escape", "idk"]
-                self.select_attack(attacks)
+                self.select_attack(self.player.learned_moves)
             case "start_attack":
+                print("heehehehheh")
                 finished = self.start_attack()
-
+        print(finished)
         return finished
 
 
@@ -109,16 +111,19 @@ class CombatUI:
                 print("enemy button clicked")
                 self.player.target = self.enemy
                 self.player.attack = self.selected_attack
-                return [self.player.attack, self.player.target]
+                self.current_state = "start_attack"
+                
 
         # draw stuff
         self.draw_emotions()
         self.draw_attack_overlay(attacks)
 
     def start_attack(self):
+        print("jey")
         finished = False
         if self.attack_button.activated:
             self.attack_button.activated = False
+            self.data = [self.player.attack, self.player.target]
             print("going forward")
             return True
 
@@ -129,8 +134,8 @@ class CombatUI:
 
         # draw stuff
         self.draw_emotions()
-        self.attack_button.draw()
-        self.back_button.draw()
+        self.attack_button.draw(self.display)
+        self.back_button.draw(self.display)
 
         return finished
 
@@ -152,7 +157,7 @@ class CombatUI:
             self.display.blit(text_surface, text_rect)
         # buttons
         for i, button in enumerate(self.move_buttons):
-            button.draw()
+            button.draw(self.display)
 
 
     def draw_emotions(self):

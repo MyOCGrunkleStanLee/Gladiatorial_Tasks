@@ -65,7 +65,7 @@ class PlanningScene(GenericScene):
 
         self.display.blit(self.background_img, (0, 0))
         for button in self.task_buttons:
-            button.draw()
+            button.draw(self.display)
 
     def next_screen(self) -> None:
         self.player_info.selected_tasks = self.selected_tasks

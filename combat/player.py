@@ -13,14 +13,14 @@ from start.button import Button
 
 
 class PlayerEmotion(Emotion):
-    def __init__(self, name, image_path, display):
+    def __init__(self, name, image_path):
         super().__init__(name, image_path)
         self.learnable_moves = []
         self.target = None
         self.attack = None
 
         self.image = pygame.image.load(self.image_path)
-        self.button = Button(display, 400, 500, self.image, 1, positioning="bottomleft")
+        self.button = Button(None, 400, 500, self.image, 1, positioning="bottomleft")
 
 
     def teach_move(self, move: object):
@@ -35,19 +35,17 @@ class PlayerEmotion(Emotion):
 
     def draw(self, display):
         # this method either draws normal sprite or button
-        self.button.draw()
-
-        # health bar
+        self.button.draw(display)
 
 
 # anger
 # example of what an initialized emotion will look like
-anger = PlayerEmotion("Anger", "Assets/SmallGoldSquare.png", None)
+anger = PlayerEmotion("Anger", "Assets/SmallGoldSquare.png")
 anger.initialize_emotion("Anger", 30, 50, 10, "anger", 1,
                         [combat.moves.punch], [])
 
 # # # happiness
-happiness = PlayerEmotion("Happiness", "Assets/SmallGoldSquare.png", None)
+happiness = PlayerEmotion("Happiness", "Assets/SmallGoldSquare.png")
 happiness.initialize_emotion("Happiness", 30, 50, 10, "joy", 1,
                               [combat.moves.punch], [])
 # embarrassment

@@ -9,21 +9,21 @@ from start.button import Button
 
 
 class EnemyEmotion(Emotion):
-    def __init__(self, name, image_path, display=None):
+    def __init__(self, name, image_path):
         super().__init__(name, image_path)
         self.target = None
         self.attack = None
 
         self.image = pygame.image.load(self.image_path)
-        self.button = Button(display, 800,40, self.image, 1, positioning="topleft")
+        self.button = Button(None, 800, 40, self.image, 1, positioning="topleft")
 
     def draw(self, display):
         # draws enemy as button
-        self.button.draw()
+        self.button.draw(display)
         
 
 # frustration
-Frustration = EnemyEmotion("Frustration", "Assets/LargeGoldSquare.png", None)
+Frustration = EnemyEmotion("Frustration", "Assets/LargeGoldSquare.png")
 Frustration.initialize_emotion("frustration", 10, 50, 3, "anger",
                              5, [combat.moves.punch], [])
 # procrastination

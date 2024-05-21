@@ -26,8 +26,8 @@ class StartScene(GenericScene):
 
         self.display.blit(self.text_surface, (self.WIDTH/2-self.text_surface.get_width()/2, 50))
 
-        self.start_button.draw()
-        self.quit_button.draw()
+        self.start_button.draw(self.display)
+        self.quit_button.draw(self.display)
 
         # change game state on click
         if self.start_button.activated:

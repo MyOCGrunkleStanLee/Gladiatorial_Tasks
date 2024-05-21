@@ -43,7 +43,7 @@ class SelectTaskScene(GenericScene):
 
         # draw
         self.display.blit(self.background_img, (0, 0))
-        self.exercise_button.draw()
+        self.exercise_button.draw(self.display)
         
         # golden overlay
         self.mark_finished_tasks()
