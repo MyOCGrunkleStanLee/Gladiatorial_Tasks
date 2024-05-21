@@ -16,15 +16,11 @@ class PlayerEmotion(Emotion):
     def __init__(self, name, image_path, display):
         super().__init__(name, image_path)
         self.learnable_moves = []
-        #w, h = pygame.display.get_surface().get_size()
-        self.x = 200
-        self.y = 300
-        self.button_activated = False
-        self.button = None
+        self.target = None
+        self.attack = None
 
         self.image = pygame.image.load(self.image_path)
-        self.rect = self.image.get_rect(bottomleft=(self.x, self.y))
-        self.button = Button(display, self.x, self.y, self.image, 1, positioning="bottomleft")
+        self.button = Button(display, 400, 500, self.image, 1, positioning="bottomleft")
 
 
     def teach_move(self, move: object):
@@ -39,10 +35,10 @@ class PlayerEmotion(Emotion):
 
     def draw(self, display):
         # this method either draws normal sprite or button
-        if self.button_activated:
-            self.button.draw()
-        else:
-           display.blit(self.image, self.rect)
+        self.button.draw()
+
+        # health bar
+        
         
 
 

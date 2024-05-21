@@ -14,7 +14,7 @@ class Emotion:
     def __init__(self, name, image_path):
         self.name = name
         self.image_path = image_path
-        self.motivation = 0
+        self.motivation = 100
         self.effectiveness = 0
         self.resilience = 0
         self.typing = ""

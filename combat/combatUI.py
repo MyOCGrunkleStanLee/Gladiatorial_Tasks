@@ -3,72 +3,149 @@ from combat.player import PlayerEmotion
 from combat.enemies import EnemyEmotion
 from start.button import Button
 
+from typing import List
+
+
 
 class CombatUI:
-    def __init__(self, display, current_phase):
+    def __init__(self, display, players: List[PlayerEmotion], enemies: List[EnemyEmotion]):
         # get the player and enemy from list from somewhere else
         self.player = PlayerEmotion("Happiness", "Assets/LargeGoldSquare.png", display)
-        self.enemy = EnemyEmotion("Frustration", "Assets/LargeGoldSquare.png")
+        self.enemy = EnemyEmotion("Frustration", "Assets/LargeGoldSquare.png", display)
         self.display = display
-        self.current_phase = current_phase
+        self.current_phase = "idle"
+        self.background_img = pygame.image.load("Assets/CombatScreen.png").convert_alpha()
+        self.create_components()
+
+        # important for combat
+        self.selected_attack = None
+
+
+    def create_components(self):
+        self.font = pygame.font.Font(None, 36)
+
+        # overlay
+        self.overlay_img = pygame.image.load("Assets/CombatMoveOverlay.png")
+        x_overlay, y_overlay = 838 , 405
+        self.overlay_rect = self.overlay_img.get_rect(topleft=(x_overlay, y_overlay))
+
+        # get rects for each attack
+        self.attack_rects = [pygame.Rect(x_overlay, y_overlay, 211, 70),
+                 pygame.Rect(x_overlay+221, y_overlay, 211, 70),
+                 pygame.Rect(x_overlay, y_overlay+80, 211, 70),
+                 pygame.Rect(x_overlay+221, y_overlay+80, 211, 70)]
+
+        # buttons for move menu
+        img = pygame.image.load("Assets/TransparentForMoveButton.png")
+        self.move_buttons = [Button(self.display, self.attack_rects[0].x, self.attack_rects[0].y, img, 1, positioning="topleft"),
+                        Button(self.display, self.attack_rects[1].x, self.attack_rects[1].y, img, 1, positioning="topleft"),
+                        Button(self.display, self.attack_rects[2].x, self.attack_rects[2].y, img, 1, positioning="topleft"),
+                        Button(self.display, self.attack_rects[3].x, self.attack_rects[3].y, img, 1, positioning="topleft")]
+        
+        # attack button
+        attack_button_image = pygame.image.load("Assets/NextButton.png").convert_alpha()
+        self.attack_button = Button(self.display, 800, 450, attack_button_image, 1)
+
 
 
     def update(self):
+        # draw bg
+        finished = False
+        self.display.blit(self.background_img, (0, 0))
         match self.current_phase:
             case "idle":
-                self.draw_idle()
+                self.idle()
             case "select_attack":
-                # TODO draw attack menu, 4 buttons
-                self.draw_attack_menu()
-            case "select_target":
-                # TODO put button on enemy
-                pass
-            case "process_attack":
-                # TODO make attack button clickable
-                pass
-            case "show_animation":
-                # TODO animate
-                pass
-        return self.current_phase
+                attacks = ["scratch", "heal", "escape", "idk"]
+                self.select_attack(attacks)
+            case "start_attack":
+                finished = self.start_attack()
+
+        return finished
 
 
-    def draw_idle(self):
+    def idle(self):
         # activate the player button
         self.player.button_activated = True
+
+        if self.player.button.hover:
+            # TODO set hover overlay
+            #self.player.button.set_new_image()
+            pass
+
         if self.player.button.activated:
             # change state, open menu
+            self.player.button_activated = False
             self.current_phase = "select_attack"
         
+        
         # draw player and enemy
-        self.player.draw(self.display)
-        self.enemy.draw(self.display)
+        self.draw_emotions()
+
+
+    def select_attack(self, attacks):
+        # if a move button is selected save in selected_attack
+        for i, button in enumerate(self.move_buttons):
+            if button.activated:
+                self.selected_attack = attacks[i]
+
+        # select enemy if an attack is selected
+        if self.selected_attack != None:
+            self.enemy.button_activated = True
+
+            if self.enemy.button.hover:
+                # TODO hover animation
+                pass
+
+            if self.enemy.button.activated:
+                # store data about attack
+                self.player.target = self.enemy
+                self.player.attack = self.selected_attack
+                self.current_phase = "start_attack"
+
+        # draw stuff
+        self.draw_emotions()
+        self.draw_attack_overlay(attacks)
+
+
+    def start_attack(self):
+        finished = False
+        if self.attack_button.activated:
+            print("data returned")
+            finished =  True
+
+        # draw stuff
+        self.draw_emotions()
+        self.attack_button.draw()
+
+        return finished
+
+    
+    def reset_ui(self):
+        # TODO has to be called somewhere in combat before a new attack cycle begins
+        self.selected_attack = None
+        self.current_phase = "idle"
         
 
 
-    def draw_attack_menu(self):
+    def draw_attack_overlay(self, attacks):
         # overlay
-        self.image = pygame.image.load("Assets/")
-        self.rect = self.image.get_rect(topleft=(self.x, self.y))
-        self.display.blit(self.image, self.rect)
-
-        # attack choose 4 buttons
-        
-
-        # w, h = pygame.display.get_surface().get_size()
-        # rect = pygame.Rect(w//2-200, 350, 400, 200)
-        # pygame.draw.rect(self.display, (255, 255, 255), rect, 0, 4)
-        # pygame.draw.rect(self.display, (0, 0, 0), rect, 4, 4)
+        self.display.blit(self.overlay_img, self.overlay_rect)
+        # attack text
+        for attack_str, rect in zip(attacks, self.attack_rects):
+            text_surface = self.font.render(attack_str, True, (255, 255, 255))
+            text_rect = text_surface.get_rect(center=rect.center)
+            self.display.blit(text_surface, text_rect)
+        # buttons
+        for i, button in enumerate(self.move_buttons):
+            button.draw()
 
 
-        # self.font = pygame.font.SysFont("College", 30)
-        # # menu
-        # cols, rows = 2,2
-        # for col in range(cols):
-        #     for row in range(rows):
-        #         x = rect.left + rect.width / 4 + (rect.width / 2) * col
-        #         y = rect.top + rect.height / 4 + (rect.height / 2) * row
-        #         i = col + 2 * row
+    def draw_emotions(self):
+        # only print emotions when they are alive
+        if self.player.motivation > 0:
+            self.player.draw(self.display)
+        if self.enemy.motivation > 0:
+            self.enemy.draw(self.display)
 
-        #         text_surf = self.font.render("hello", True, 'black')
-        #         text_rect = text_surf.get_rect(center = (x,y))
-        #         self.display.blit(text_surf, text_rect)
+
