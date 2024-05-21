@@ -1,23 +1,37 @@
 import pygame
+from utilities.game_state_object import GameStateObject
 from utilities.generic_scene import GenericScene
 from combat.combat import Combat
+from combat.player import PlayerEmotion
+from combat.enemies import EnemyEmotion
+from utilities.player_info import Player
+from start.button import Button
+from combat.combatUI import CombatUI
 
 
 class CombatScene(GenericScene):
-
     def create_components(self):
         self.combat = Combat(self.player_info)
         self.combat.generate_enemies()
         self.combat.phase = "select_attack"
 
+        # TODO give CombatUI a player and enemy list
+        self.ui = CombatUI(self.display, [], [])
+        self.ui_finished = False
+
+
     def game_body_loop(self) -> None:
-        self.display.fill("yellow")
 
-        # Title
-        my_font = pygame.font.SysFont('College', 30)
-        text_surface = my_font.render('Combat!', False, (0, 0, 0))
-        self.display.blit(text_surface, (self.WIDTH/2-text_surface.get_width()/2, 50))
+        if not self.ui_finished:
+            self.ui_finished = self.ui.update()
+        else:
+            # TODO do calculation stuff, also logic for win/loose condition, your code for this is below, commented it for clarification
 
+            # after calculating reset ui so cycle can continue (assuming that no win/loose condition)
+            self.ui.reset_ui()
+            self.ui_finished = False
+
+        """
         if self.combat.phase == "select_attack":
             # todo generate a button to let the user select 1 of 4? attacks
             for enemy in self.combat.enemies:
@@ -55,3 +69,4 @@ class CombatScene(GenericScene):
 
         if self.combat.phase == "end":
             self.game_state_object.current_state = "do_it_irl"
+        """

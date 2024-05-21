@@ -9,12 +9,18 @@ stats:
 """
 import pygame
 from combat.emotions import Emotion
+from start.button import Button
 
 
 class PlayerEmotion(Emotion):
-    def __init__(self, name, image_path):
+    def __init__(self, name, image_path, display):
         super().__init__(name, image_path)
         self.learnable_moves = []
+        self.target = None
+        self.attack = None
+
+        self.image = pygame.image.load(self.image_path)
+        self.button = Button(display, 400, 500, self.image, 1, positioning="bottomleft")
 
 
     def teach_move(self, move: object):
@@ -28,22 +34,24 @@ class PlayerEmotion(Emotion):
 
 
     def draw(self, display):
-        image = pygame.image.load(self.image_path)
-        w, h = pygame.display.get_surface().get_size()
-        rect = image.get_rect(bottomleft=(200, h-50))
-        display.blit(image, rect)
+        # this method either draws normal sprite or button
+        self.button.draw()
+
+        # health bar
+        
+        
 
 
 # anger
 # example of what an initialized emotion will look like
-anger = PlayerEmotion("Anger", "")
-anger.initialize_emotion("Anger", 30, 50, 10, "anger", 1,
-                         [], [])
+# anger = PlayerEmotion("Anger", "")
+# anger.initialize_emotion("Anger", 30, 50, 10, "anger", 1,
+#                          [], [])
 
-# # happiness
-happiness = PlayerEmotion("Happiness", "")
-happiness.initialize_emotion("Happiness", 30, 50, 10, "joy", 1,
-                              [], [])
+# # # happiness
+# happiness = PlayerEmotion("Happiness", "")
+# happiness.initialize_emotion("Happiness", 30, 50, 10, "joy", 1,
+#                               [], [])
 # embarrassment
 
 

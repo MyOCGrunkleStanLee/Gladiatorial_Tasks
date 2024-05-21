@@ -59,3 +59,5 @@ class Button():
             return self.image.get_rect(center=(self.x, self.y))
         elif self.positioning == "topleft":
             return self.image.get_rect(topleft=(self.x, self.y)) 
+        elif self.positioning == "bottomleft":
+            return self.image.get_rect(bottomleft=(self.x, self.y)) 

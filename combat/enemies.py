@@ -5,28 +5,31 @@
 import pygame
 import combat.moves
 from combat.emotions import Emotion
+from start.button import Button
 
 
 class EnemyEmotion(Emotion):
-    def __init__(self, name, image_path):
+    def __init__(self, name, image_path, display):
         super().__init__(name, image_path)
         self.target = None
         self.attack = None
 
+        self.image = pygame.image.load(self.image_path)
+        self.button = Button(display, 800,40, self.image, 1, positioning="topleft")
+
     
     def draw(self, display):
-        image = pygame.image.load(self.image_path)
-        w, h = pygame.display.get_surface().get_size()
-        rect = image.get_rect(topleft=(w-400, 0))
-        display.blit(image, rect)
+        # draws enemy as button
+        self.button.draw()
+        
 
 
 # frustration
-Frustration = EnemyEmotion("Frustration", "")
-Frustration.initialize_emotion("frustration", 10, 50, 3, "anger",
-                             5, [combat.moves.punch], [])
+# Frustration = EnemyEmotion("Frustration", "")
+# Frustration.initialize_emotion("frustration", 10, 50, 3, "anger",
+#                              5, [combat.moves.punch], [])
 # procrastination
 # distraction
 # pain
 # excuse
-enemies = [Frustration]
+# enemies = [Frustration]
