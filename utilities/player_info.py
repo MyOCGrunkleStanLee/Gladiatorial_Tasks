@@ -13,7 +13,7 @@ class Player:
         self.tasks_state = {1: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0},
                             2: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}, 
                             3: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}}
-    
+        self.selected_tasks = None
 
     def get_finished_projects(self):
         # loops over tasks_state and decides which projects are finished
