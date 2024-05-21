@@ -10,22 +10,21 @@ class DoItIRLScene(GenericScene):
     def __init__(self, display: pygame.Surface, game_state_object: GameStateObject, player_info: Player = None) -> None:
         super().__init__(display, game_state_object, player_info)
         # this dict contains the the amount of seconds for each task
-        self.task_parameters: dict[str, int] = {
-            "task1": 60,
-            "task2": 60,
-            "task3": 60,
-            "task4": 60,
-            "task5": 60,
-        }
+        self.tasks_time = {1: {1: 60, 2: 6, 3: 60, 4: 60, 5: 60},
+                           2: {1: 60, 2: 60, 3: 60, 4: 60, 5: 60}, 
+                           3: {1: 60, 2: 60, 3: 60, 4: 60, 5: 60}}
+        self.task_time_fixed = 300
 
         # this needs to be set before the game loop starts
         # --> change/increment task after each combat
         # maybe this should be int for simpler increments? 
-        self.task = ""
+        self.task = self.player_info.current_task
 
         self.timer = None
         self.instruction_image = None
         self.initialized = False
+
+        self.font = pygame.font.SysFont(None, 50)
 
 
     def create_components(self) -> None:
@@ -33,7 +32,7 @@ class DoItIRLScene(GenericScene):
         # position of components
         self.start_button_pos = (self.WIDTH//2-100, 200)
         self.finish_button_pos = (self.WIDTH//2+100, 200)
-        self.instruction_image_pos = (self.WIDTH/2, 400)
+        self.instruction_pos = (self.WIDTH/2, 400)
         self.timer_pos = (self.WIDTH//2, 70)
         #-------------------------------------------------#
 
@@ -56,26 +55,37 @@ class DoItIRLScene(GenericScene):
         # start timer
         if self.starter_button.activated:
             self.timer.start()
+
+        # if timer runs out, go to combat
+        if self.timer.done:
+            self.game_state_object.current_state = "combat"
+        
+        # finish task
+        if self.finish_button.activated:
+            self.timer.activated = False
+            self.game_state_object.current_state = "combat"
         
         # create the instruction image based on the taskid
-        instruction_image_path = "do_it_irl/assets/" + self.task + "-instruction.png"
-        self.instruction_image = pygame.image.load(instruction_image_path)
-        self.instruction_image_rect = self.instruction_image.get_rect(
-                    center=(self.instruction_image_pos[0], self.instruction_image_pos[1]))
+        task_to_display = self.player_info.selected_tasks[self.player_info.current_task]
+        text_surface = self.font.render(task_to_display, True, (255, 255, 255))
+        text_rect = text_surface.get_rect(center=(self.instruction_pos[0], self.instruction_pos[1]))
+        
 
         self.draw()
+        self.display.blit(text_surface, text_rect)
         
 
     def initialize(self):
         # set the task id
-        self.task = self.player_info.task
+        self.task = self.player_info.current_task
         # set up timer
-        self.timer = Timer(self.task_parameters[self.task], self.timer_pos, 70)
+        self.timer = Timer(self.task_time_fixed, self.timer_pos, 70)
+        #self.timer = Timer(self.task_parameters[self.task], self.timer_pos, 70)
 
 
     def draw(self):
         self.display.fill("violet")
-        self.display.blit(self.instruction_image, self.instruction_image_rect)
+        #self.display.blit(self.instruction_image, self.instruction_image_rect)
         self.timer.draw(self.display)
         self.starter_button.draw()
         self.finish_button.draw()
