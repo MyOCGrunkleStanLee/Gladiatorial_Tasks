@@ -7,8 +7,8 @@ from utilities.generic_scene import GenericScene
 class TaskComplete(GenericScene):
     
     def create_components(self):
-        start_img = pygame.image.load("Assets/StartButton.png").convert_alpha()
-        self.starter_button = Button(self.display, self.WIDTH/2, 350, start_img, 0.4)
+        start_img = pygame.image.load("Assets/FinishedButton.png").convert_alpha()
+        self.starter_button = Button(self.display, self.WIDTH/2, 400, start_img, 0.8)
 
         
         self.bg = pygame.image.load("Assets/TaskCompleteScreen.png")
