@@ -29,8 +29,24 @@ class PlanningScene(GenericScene):
             '10 Burpees',
         ]
 
+        # task string image file paths
+        self.task_image_path = [
+            "Assets/ExerciseWords/PushUps.png",
+            "Assets/ExerciseWords/PullUps.png",
+            "Assets/ExerciseWords/Plank.png",
+            "Assets/ExerciseWords/SitUps.png",
+            "Assets/ExerciseWords/Squats.png",
+            "Assets/ExerciseWords/Crunches.png",
+            "Assets/ExerciseWords/Lunges.png",
+            "Assets/ExerciseWords/HighKnees.png",
+            "Assets/ExerciseWords/Rows.png",
+            "Assets/ExerciseWords/CalfRaises.png",
+            "Assets/ExerciseWords/JumpingJacks.png",
+            "Assets/ExerciseWords/Burpees.png"
+        ]
+
         # (x, y) coordinate tules based on topleft positioning
-        task_positions = [
+        self.task_positions = [
             (615, 75),
             (615, 155),
             (615, 225),
@@ -45,12 +61,28 @@ class PlanningScene(GenericScene):
             (940, 465),
         ]
 
+        self.excercise_positions = [
+            (260, 170),
+            (260, 220),
+            (260, 270),
+            (260, 320),
+            (260, 370)
+        ]
+
+        self.excercise_images: list[pygame.Surface] = []
+
         self.bordered_task = pygame.image.load(
             "planning/border_task.png"
         ).convert_alpha()
 
+        self.cover_task_image = pygame.image.load(
+            "planning/cover-task-image.png"
+        ).convert_alpha()
+
+        self.coordinates_to_cover: list[tuple[int, int]] = []
+
         self.task_buttons = []
-        for x_position, y_position in task_positions:
+        for x_position, y_position in self.task_positions:
             created_button = Button(
                 self.display, x_position, y_position, self.bordered_task, 1, "topleft"
             )
@@ -71,6 +103,12 @@ class PlanningScene(GenericScene):
         for button in self.task_buttons:
             button.draw(self.display)
 
+        for coordinate in self.coordinates_to_cover:
+            self.display.blit(self.cover_task_image, coordinate)
+        
+        for index, item in enumerate(self.excercise_images):
+            self.display.blit(item, self.excercise_positions[index])
+
     def next_screen(self) -> None:
         self.player_info.selected_tasks = self.selected_tasks
         self.game_state_object.current_state = "select_starter"
@@ -86,3 +124,11 @@ class PlanningScene(GenericScene):
         if len(self.selected_tasks) == 5:
             self.next_screen()
             return
+
+        # add coordinate to cover
+        self.coordinates_to_cover.append(self.task_positions[task_index])
+
+        # add image to list
+        text_image = pygame.image.load(self.task_image_path[task_index])
+        self.excercise_images.append(text_image)
+        
