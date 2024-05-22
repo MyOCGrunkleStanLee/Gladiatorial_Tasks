@@ -13,6 +13,7 @@ class EnemyEmotion(Emotion):
         super().__init__(name, image_path)
         self.target = None
         self.attack = None
+        self.enemy = True
 
         self.image = pygame.image.load(self.image_path)
         self.button = Button(None, 800, 40, self.image, 1, positioning="topleft")
@@ -24,7 +25,7 @@ class EnemyEmotion(Emotion):
 
 # frustration
 Frustration = EnemyEmotion("Frustration", "Assets/LargeGoldSquare.png")
-Frustration.initialize_emotion("frustration", 10, 50, 3, "anger",
+Frustration.initialize_emotion("frustration", 10, 50, 3, 5, "anger",
                              5, [combat.moves.punch], [])
 # procrastination
 # distraction

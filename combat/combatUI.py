@@ -20,7 +20,6 @@ class CombatUI:
 
         # important for combat
         self.selected_attack = None
-        self.data = None
 
 
     def create_components(self):
@@ -61,7 +60,11 @@ class CombatUI:
             case "select_attack":
                 self.select_attack(self.player.learned_moves)
             case "start_attack":
+                if finished == "undo":
+                    self.selected_attack = None
+                    self.current_phase = "select_attack"
                 finished = self.start_attack()
+                    
         return finished
 
 
@@ -74,7 +77,7 @@ class CombatUI:
             # self.player.button.set_new_image()
             pass
 
-        if self.player.button.activated:
+        if self.player.button.clicked:
             # change state, open menu
             self.player.button_activated = False
             self.current_phase = "select_attack"
@@ -96,7 +99,6 @@ class CombatUI:
                     print("unvalid")
                     self.selected_attack = "unvalid"
                     
-
         if self.selected_attack == "unvalid":
             font = pygame.font.SysFont(None, 20)
             text_surface = font.render("Pick a move!", True, (255, 255, 255))
@@ -113,11 +115,11 @@ class CombatUI:
 
             if self.enemy.button.activated:
                 # store data about attack
+                self.current_phase = "start_attack"
                 print("enemy button clicked")
                 self.player.target = self.enemy
                 self.player.attack = self.selected_attack
                 self.current_phase = "start_attack"
-                
 
         # draw stuff
         self.draw_emotions()
@@ -127,7 +129,6 @@ class CombatUI:
         finished = False
         if self.attack_button.activated:
             self.attack_button.activated = False
-            self.data = [self.player.attack, self.player.target]
             print("going forward")
             return True
 
@@ -137,7 +138,7 @@ class CombatUI:
             self.reset_ui()
 
             print("undoing")
-            return False
+            return "undo"
 
         # draw stuff
         self.draw_emotions()
@@ -146,7 +147,6 @@ class CombatUI:
 
         return finished
 
-    
     def reset_ui(self):
         # TODO has to be called somewhere in combat before a new attack cycle begins
         self.selected_attack = None

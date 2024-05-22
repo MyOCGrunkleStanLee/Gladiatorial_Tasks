@@ -29,79 +29,39 @@ class CombatScene(GenericScene):
     def game_body_loop(self) -> None:
         if not self.initialized:
             self.initialze()
-            
 
         if not self.ui_finished:
             self.ui_finished = self.ui.update()
+
         else:
-            data = self.ui.data
-            print(data)
-            if self.combat.phase == "select_attack":
-                # for emotion in self.combat.emotions:
-                #    data = self.ui.select_attack(emotion.learned_moves)
-                emotion = self.combat.emotions[0]   # for MVP only one emotion
-                if data is not None:
-                    emotion.attack = data[0]
-                    emotion.target = data[1]
-                    #emotion.attack, emotion.target = data
-                    self.combat.phase = "confirm_attack"
+            # enemy actions
+            for enemy in self.combat.enemies:
+                self.combat.select_enemy_attack(enemy)
+                self.combat.select_enemy_target(enemy, self.combat.emotions)
 
-                for enemy in self.combat.enemies:
-                    self.combat.select_enemy_attack(enemy)
-                    self.combat.select_enemy_target(enemy, self.combat.emotions)
+            # this is to build the speeed queue the way I did it is a bit janky, but it should work
+            attack_queue = {}
+            speed_queue = []
+            for emotion in self.combat.emotions + self.combat.enemies:
+                attack_queue[emotion.speed] = emotion
+                speed_queue.append(emotion.speed)
+            speed_queue.sort()
 
-                if self.combat.emotions[0].attack is not None:
-                    self.combat.phase = "process_attack"
+            print("WE ARE NOW PROCESSING THE ATTACKS")
+            # todo add an attack order queue if we decide to add speed as a mechanic
+            for speed_value in speed_queue:
+                # grab the actual emotion based off the speed value
+                emotion = attack_queue.get(speed_value)
+                # if their health is greater than 0 we process their attack
+                if emotion.motivation >= 0:
+                    self.combat.process_attack(emotion)
 
-            # if self.combat.phase == "confirm_attack":     # TODO assuming this is unneccesary?
-            #     if self.ui.start_attack() is True:
-            #         self.combat.phase = "process_attack"
-            #     else:
-            #         self.combat.phase = "select_attack"
-
-            if self.combat.phase == "process_attack":
-                print("WE ARE NOW PROCESSING THE ATTACKS")
-                # todo add an attack order queue if we decide to add speed as a mechanic
-                for emotion in self.combat.emotions:
-                    if emotion.motivation > 0:
-                        self.combat.process_attack(emotion)
-
-                for enemy in self.combat.enemies:
-                    if enemy.motivation > 0:
-                        self.combat.process_attack(enemy)
-                self.combat.phase = "show_animation"
-
-            if self.combat.phase == "show_animation":
-                self.combat.phase = "clean_up"
-
-            if self.combat.phase == "clean_up":
-                for emotion in self.combat.emotions:
-                    if emotion.motivation <= 0:
+                # if their target hp hits 0 we remove them
+                if emotion.target.motivation <= 0:
+                    if emotion.enemy:
+                        self.combat.clean_enemies(emotion)
+                    else:
                         self.combat.clean_emotion(emotion)
-
-                for enemy in self.combat.enemies:
-                    if enemy.motivation <= 0:
-                        self.combat.clean_enemies(enemy)
-
-                if len(self.combat.emotions) == 0:
-                    self.combat.phase = "loss"
-
-                elif len(self.combat.enemies) == 0:
-                    self.combat.phase == "win"
-
-                else:
-                    self.combat.phase = "select_attack"
-
-                # todo check if any emotions or enemies have ran out of health and remove them
-                # todo check if the player is out of emotions or if the enemy is defeated
-
-            if self.combat.phase == "win":
-                # todo display a you won screen and give experience
-                self.game_state_object.current_state = "do_it_irl"
-
-            if self.combat.phase == "loss":
-                # todo display a you lose screen and have the player try again or maybe move on anyways?
-                self.game_state_object.current_state = "select_starter"
 
             #print("player health: " + str(self.combat.emotions[0].motivation))
             #print("enemy health: " + str(self.combat.enemies[0].motivation))
@@ -110,4 +70,12 @@ class CombatScene(GenericScene):
             self.ui.reset_ui()
             self.ui_finished = False
 
-        
+            if len(self.combat.emotions) == 0:
+                print("YOU LOSE")
+                # todo display a you lose screen and have the player try again or maybe move on anyways?
+                self.game_state_object.current_state = "select_starter"
+
+            elif len(self.combat.enemies) == 0:
+                print("YOU WIN")
+                # todo display a you won screen and give experience
+                self.game_state_object.current_state = "do_it_irl"

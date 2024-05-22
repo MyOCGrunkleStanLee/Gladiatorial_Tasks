@@ -17,13 +17,14 @@ class Emotion:
         self.motivation = 100
         self.effectiveness = 0
         self.resilience = 1
+        self.speed = 0
         self.typing = ""
         self.level = 1
         self.experience_factor = 0
         self.learned_moves = []
 
 
-    def initialize_emotion(self, name, motivation, effectiveness, resilience, typing, experience_factor, learned_moves,
+    def initialize_emotion(self, name, motivation, effectiveness, resilience, speed, typing, experience_factor, learned_moves,
                            learnable_moves):
         """
         this will be used for each emotions basic starting stats at the start of the game launch
@@ -41,6 +42,7 @@ class Emotion:
         self.motivation = motivation
         self.effectiveness = effectiveness
         self.resilience = resilience
+        self.speed = speed
         self.typing = typing
         self.experience_factor = experience_factor
         self.learned_moves = learned_moves
