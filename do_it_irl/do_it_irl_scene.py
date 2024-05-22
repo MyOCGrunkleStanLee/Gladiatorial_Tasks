@@ -60,10 +60,14 @@ class DoItIRLScene(GenericScene):
         if self.timer.done:
             self.game_state_object.current_state = "combat"
         
-        # finish task
+        # finish task   
         if self.finish_button.activated:
             self.timer.activated = False
-            self.game_state_object.current_state = "combat"
+            if self.player_info.current_task == 4:
+                self.game_state_object.current_state = "task_complete"
+            else: 
+                self.player_info.current_task += 1
+                self.game_state_object.current_state = "combat"
         
         # create the instruction image based on the taskid
         task_to_display = self.player_info.selected_tasks[self.player_info.current_task]

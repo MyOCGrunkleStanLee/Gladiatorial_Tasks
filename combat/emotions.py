@@ -54,3 +54,6 @@ class Emotion:
     def draw(self, display):
         # draw the emotion here
         pass
+    
+    def reset(self):
+        self.motivation = self.max_motivation

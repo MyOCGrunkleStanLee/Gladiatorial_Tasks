@@ -34,6 +34,7 @@ class CombatScene(GenericScene):
 
 
     def game_body_loop(self) -> None:
+        print(self.player_info.emotions)
         if not self.initialized:
             self.initialze()
 
