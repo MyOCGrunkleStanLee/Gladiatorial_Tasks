@@ -16,12 +16,17 @@ class CombatScene(GenericScene):
 
 
         # TODO give CombatUI a player and enemy list
-        print(self.combat.emotions)
+
         self.ui = None
         self.ui_finished = False
 
         self.initialized = False
 
+    def reset(self):
+        self.create_components()
+        self.combat.display_combat_info()
+        for emotion in self.combat.emotions + self.combat.enemies:
+            emotion.motivation = emotion.max_motivation
 
     def initialze(self):
         self.ui = CombatUI(self.display, self.combat.emotions, self.combat.enemies)
@@ -61,26 +66,34 @@ class CombatScene(GenericScene):
                 if emotion.motivation >= 0:
                     self.combat.process_attack(emotion)
 
-                # if their target hp hits 0 we remove them
-                if emotion.target.motivation <= 0:
-                    try:
-                        self.combat.emotions.remove(emotion.target)
-                    except ValueError:
-                        self.combat.enemies.remove(emotion.target)
+            loss = True
+            for emotion in self.combat.emotions:
+                if emotion.motivation > 0:
+                    loss = False
 
-            if len(self.combat.emotions) == 0:
+            win = True
+            for enemy in self.combat.enemies:
+                if enemy.motivation > 0:
+                    win = False
+
+            if loss is True:
                 print("YOU LOSE")
                 # after calculating reset ui so cycle can continue (assuming that no win/loose condition)
                 self.ui.reset_ui()
                 self.ui_finished = False
+                for emotion in self.combat.emotions:
+                    print("REMOVING AN EMOTION")
+                    self.combat.emotions.remove(emotion)
+                self.reset()
                 # todo display a you lose screen and have the player try again or maybe move on anyways?
                 self.game_state_object.current_state = "select_starter"
 
-            elif len(self.combat.enemies) == 0:
+            elif win is True:
                 print("YOU WIN")
                 # after calculating reset ui so cycle can continue (assuming that no win/loose condition)
                 self.ui.reset_ui()
                 self.ui_finished = False
+                self.reset()
                 # todo display a you won screen and give experience
                 self.game_state_object.current_state = "do_it_irl"
 

@@ -10,7 +10,6 @@ from typing import List
 class CombatUI:
     def __init__(self, display, players: List[PlayerEmotion], enemies: List[EnemyEmotion]):
         # get the player and enemy from list from somewhere else
-        
         self.player = players[0]
         self.enemy = enemies[0]
         self.display = display
