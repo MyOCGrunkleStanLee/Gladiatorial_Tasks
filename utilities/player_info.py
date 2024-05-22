@@ -7,7 +7,7 @@ class Player:
         # increment after each combat
         # should prob be int?
         self.current_project = 1
-        self.current_task = 0
+        self.current_task = 1
         # saves info about which task from which project is done
         # {project_id: {task_id:status, ...}...}
         self.tasks_state = {1: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0},

@@ -24,8 +24,7 @@ class TaskScene(GenericScene):
 
     def game_body_loop(self):
         if self.next_button.activated:
-            self.player_info.current_task += 1
-            print("clicked")
+            self.game_state_object.current_state = "combat"
 
         self.display.blit(self.background_img, (0, 0))
         self.next_button.draw(self.display)

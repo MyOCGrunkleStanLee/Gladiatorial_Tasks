@@ -32,16 +32,16 @@ class DoItIRLScene(GenericScene):
         # position of components
         self.start_button_pos = (self.WIDTH//2-100, 200)
         self.finish_button_pos = (self.WIDTH//2+100, 200)
-        self.instruction_pos = (self.WIDTH/2, 300)
+        self.instruction_pos = (self.WIDTH/2, 350)
         self.timer_pos = (self.WIDTH//2, 70)
         #-------------------------------------------------#
 
         # start button
-        start_img = pygame.image.load("do_it_irl/assets/start_button.png").convert_alpha()
+        start_img = pygame.image.load("Assets/StartButton.png").convert_alpha()
         self.starter_button = Button(self.display, self.start_button_pos[0], 
                                      self.start_button_pos[1], start_img, 0.8)
         # finish button
-        finish_img = pygame.image.load("do_it_irl/assets/finish_button.png").convert_alpha()
+        finish_img = pygame.image.load("Assets/FinishedButton.png").convert_alpha()
         self.finish_button = Button(self.display, self.finish_button_pos[0], 
                                     self.finish_button_pos[1], finish_img, 0.8)
 
@@ -58,19 +58,21 @@ class DoItIRLScene(GenericScene):
 
         # if timer runs out, go to combat
         if self.timer.done:
-            self.game_state_object.current_state = "combat"
+            self.game_state_object.current_state = "task_scene"
         
         # finish task   
         if self.finish_button.activated:
             self.timer.activated = False
-            if self.player_info.current_task == 4:
+            if self.player_info.current_task == 5:
                 self.game_state_object.current_state = "task_complete"
             else: 
+                print(self.player_info.current_task)
+                self.player_info.tasks_state[self.player_info.current_project][self.player_info.current_task] = 1
                 self.player_info.current_task += 1
-                self.game_state_object.current_state = "combat"
+                self.game_state_object.current_state = "task_scene"
         
         # create the instruction image based on the taskid
-        task_to_display = self.player_info.selected_tasks[self.player_info.current_task]
+        task_to_display = self.player_info.selected_tasks[self.player_info.current_task-1]
         text_surface = self.font.render(task_to_display, True, (0, 0, 0))
         text_rect = text_surface.get_rect(center=(self.instruction_pos[0], self.instruction_pos[1]))
         
@@ -88,7 +90,7 @@ class DoItIRLScene(GenericScene):
 
 
     def draw(self):
-        self.display.fill("violet")
+        self.display.fill("green")
         #self.display.blit(self.instruction_image, self.instruction_image_rect)
         self.timer.draw(self.display)
         self.starter_button.draw(self.display)
