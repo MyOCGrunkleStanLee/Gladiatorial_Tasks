@@ -28,14 +28,14 @@ class CombatUI:
 
         # overlay
         self.overlay_img = pygame.image.load("Assets/CombatMoveOverlay.png")
-        x_overlay, y_overlay = 838 , 405
-        self.overlay_rect = self.overlay_img.get_rect(topleft=(x_overlay, y_overlay))
+        self.x_overlay, self.y_overlay = 838 , 405
+        self.overlay_rect = self.overlay_img.get_rect(topleft=(self.x_overlay, self.y_overlay))
 
         # get rects for each attack
-        self.attack_rects = [pygame.Rect(x_overlay, y_overlay, 211, 70),
-                 pygame.Rect(x_overlay+221, y_overlay, 211, 70),
-                 pygame.Rect(x_overlay, y_overlay+80, 211, 70),
-                 pygame.Rect(x_overlay+221, y_overlay+80, 211, 70)]
+        self.attack_rects = [pygame.Rect(self.x_overlay, self.y_overlay, 211, 70),
+                 pygame.Rect(self.x_overlay+221, self.y_overlay, 211, 70),
+                 pygame.Rect(self.x_overlay, self.y_overlay+80, 211, 70),
+                 pygame.Rect(self.x_overlay+221, self.y_overlay+80, 211, 70)]
 
         # buttons for move menu
         img = pygame.image.load("Assets/TransparentForMoveButton.png")
@@ -61,9 +61,7 @@ class CombatUI:
             case "select_attack":
                 self.select_attack(self.player.learned_moves)
             case "start_attack":
-                print("heehehehheh")
                 finished = self.start_attack()
-        print(finished)
         return finished
 
 
@@ -94,12 +92,19 @@ class CombatUI:
                     self.selected_attack = attacks[i]
                     print(self.selected_attack.name)
                 else:
-                    # todo play no no noise here
-                    print("index out of range")
+                    # unvalid move -> display tip
+                    print("unvalid")
+                    self.selected_attack = "unvalid"
+                    
 
+        if self.selected_attack == "unvalid":
+            font = pygame.font.SysFont(None, 20)
+            text_surface = font.render("Pick a move!", True, (255, 255, 255))
+            text_rect = text_surface.get_rect(topleft=(self.x_overlay, self.y_overlay-30))
+            self.display.blit(text_surface, text_rect)
 
         # select enemy if an attack is selected
-        if self.selected_attack != None:
+        if self.selected_attack != None and self.selected_attack != "unvalid":
             self.enemy.button_activated = True
 
             if self.enemy.button.hover:
@@ -111,7 +116,7 @@ class CombatUI:
                 print("enemy button clicked")
                 self.player.target = self.enemy
                 self.player.attack = self.selected_attack
-                self.current_state = "start_attack"
+                self.current_phase = "start_attack"
                 
 
         # draw stuff
@@ -119,7 +124,6 @@ class CombatUI:
         self.draw_attack_overlay(attacks)
 
     def start_attack(self):
-        print("jey")
         finished = False
         if self.attack_button.activated:
             self.attack_button.activated = False
@@ -129,6 +133,9 @@ class CombatUI:
 
         if self.back_button.activated:
             self.back_button.activated = False
+            # reset everything
+            self.reset_ui()
+
             print("undoing")
             return False
 
@@ -143,6 +150,7 @@ class CombatUI:
     def reset_ui(self):
         # TODO has to be called somewhere in combat before a new attack cycle begins
         self.selected_attack = None
+        self.data = None
         self.current_phase = "idle"
         
 

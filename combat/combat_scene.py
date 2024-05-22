@@ -14,11 +14,9 @@ class CombatScene(GenericScene):
         self.combat = Combat(self.player_info)
         self.combat.generate_enemies()
 
-
-        # TODO give CombatUI a player and enemy list
-        print(self.combat.emotions)
         self.ui = None
         self.ui_finished = False
+        self.combat.phase = "select_attack"
 
         self.initialized = False
 
@@ -36,13 +34,16 @@ class CombatScene(GenericScene):
         if not self.ui_finished:
             self.ui_finished = self.ui.update()
         else:
-            print("player finished")
             data = self.ui.data
+            print(data)
             if self.combat.phase == "select_attack":
                 # for emotion in self.combat.emotions:
                 #    data = self.ui.select_attack(emotion.learned_moves)
+                emotion = self.combat.emotions[0]   # for MVP only one emotion
                 if data is not None:
-                    emotion.attack, emotion.target = data
+                    emotion.attack = data[0]
+                    emotion.target = data[1]
+                    #emotion.attack, emotion.target = data
                     self.combat.phase = "confirm_attack"
 
                 for enemy in self.combat.enemies:
@@ -50,13 +51,13 @@ class CombatScene(GenericScene):
                     self.combat.select_enemy_target(enemy, self.combat.emotions)
 
                 if self.combat.emotions[0].attack is not None:
-                    self.combat.phase = "confirm_attack"
-
-            if self.combat.phase == "confirm_attack":
-                if self.ui.start_attack() is True:
                     self.combat.phase = "process_attack"
-                else:
-                    self.combat.phase = "select_attack"
+
+            # if self.combat.phase == "confirm_attack":     # TODO assuming this is unneccesary?
+            #     if self.ui.start_attack() is True:
+            #         self.combat.phase = "process_attack"
+            #     else:
+            #         self.combat.phase = "select_attack"
 
             if self.combat.phase == "process_attack":
                 print("WE ARE NOW PROCESSING THE ATTACKS")
@@ -101,6 +102,9 @@ class CombatScene(GenericScene):
             if self.combat.phase == "loss":
                 # todo display a you lose screen and have the player try again or maybe move on anyways?
                 self.game_state_object.current_state = "select_starter"
+
+            #print("player health: " + str(self.combat.emotions[0].motivation))
+            #print("enemy health: " + str(self.combat.enemies[0].motivation))
 
             # after calculating reset ui so cycle can continue (assuming that no win/loose condition)
             self.ui.reset_ui()
