@@ -4,11 +4,16 @@ from utilities.generic_scene import GenericScene
 from utilities.player_info import Player
 from GameStart.starter_option import StarterOption
 import combat.emotions
+from combat.emotions import Emotion
 
 
 class SelectStarterScene(GenericScene):
 
     def create_components(self):
+        self.background_img = pygame.image.load(
+            "Assets/ChooseEmotionsScreen.png"
+        ).convert_alpha()
+
         start_img = pygame.image.load("start/start_button.png").convert_alpha()
         self.starter_button = Button(self.display, self.WIDTH / 2, 500, start_img, 0.4)
 
@@ -16,18 +21,17 @@ class SelectStarterScene(GenericScene):
         my_font = pygame.font.SysFont('College', 30)
         self.text_surface = my_font.render('Select Starter', False, (0, 0, 0))
 
-        happiness_image = pygame.image.load(
-            "Assets/HappyDog.png"
-        )
-        happiness_image = pygame.transform.scale(happiness_image, (100, 100))
+        self.emotion_object = Emotion("Happiness", "Assets/HappyDog.png")
+
         self.starter_option = StarterOption(
-            self.display, 560, 100, happiness_image, "Happiness"
+            self.display, 50, 130, self.emotion_object
         )
 
-        self.selected_starter = ''
+        self.selected_starter: Emotion = None
 
     def game_body_loop(self):
-        self.display.fill("green")
+
+        self.display.blit(self.background_img, (0, 0))
 
         # Title
         self.display.blit(
@@ -39,7 +43,7 @@ class SelectStarterScene(GenericScene):
 
         if self.starter_option.activated:
             # print(f"Selected {self.starter_option.emotion_name}")
-            self.selected_starter = self.starter_option.emotion_name
+            self.selected_starter = self.starter_option.emotion
 
         # change game state on click
         if self.starter_button.activated:
