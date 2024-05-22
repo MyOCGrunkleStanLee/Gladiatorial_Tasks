@@ -47,7 +47,7 @@ anger.initialize_emotion("Anger", 30, 50, 10, 7, "anger", 1,
 
 # # # happiness
 happiness = PlayerEmotion("Happiness", "Assets/HappyDog.png")
-happiness.initialize_emotion("Happiness", 30, 50, 10, 3, "joy", 1,
+happiness.initialize_emotion("Happiness", 30, 30, 10, 3, "joy", 1,
                               [combat.moves.punch], [])
 # embarrassment
 
