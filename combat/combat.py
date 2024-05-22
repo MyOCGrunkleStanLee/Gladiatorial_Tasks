@@ -30,20 +30,48 @@ class Combat:
         for i in range(number - len(opponents)):
             self.enemies.append(randomly_select_enemy())
 
-    # todo process the attack
+    def process_effects(self, emotion):
+        base_stat_map = {"health": emotion.max_motivation, "attack": emotion.base_effectiveness,
+                         "defense": emotion.base_resilience, "speed": emotion.base_speed}
+
+        for effect in emotion.active_effects:
+            if effect.timer_handler() is True:
+                print("EFFECT RAN OUT OF TIME")
+                # when the timer runs out we make their base stat back to what it was
+                emotion.change_stat(effect.affected_stat, base_stat_map.get(effect.affected_stat))
+                emotion.active_effects.remove(effect)
+                return
+            # change the stat value the effect affects by the amount it affects it by
+
+            value = effect.apply_effect(base_stat_map.get(effect.affected_stat))
+            emotion.change_stat(effect.affected_stat, value)
+
     def process_attack(self, emotion):
         print("PROCESSING AN ATTACK")
+        if emotion.attack.special_effects:
+            print("ATTACK HAD A SPECIAL EFFECT APPLYING IT NOW...")
+            for special_effect in emotion.attack.special_effects:
+                if special_effect.affected_stat == "health":
+                    emotion.motivation += special_effect.power
+                    if emotion.motivation > emotion.max_motivation:
+                        emotion.motivation = emotion.max_motivation
+
+                    print(f"Healed {emotion.name} by {special_effect.power}")
+                    return
+
+                if emotion.attack.target == "self":
+                    emotion.active_effects.append(special_effect)
+
+                else:
+                    emotion.target.active_effects.append(special_effect)
+            print(f"SPECIAL EFFECTS HAVE BEEN APPLIED EMOTIONS EFFECTS ARE CURRENTLY {emotion.active_effects}")
+
         # todo program type advantages and disadvantages
         attack = emotion.attack
         effectiveness = emotion.effectiveness
         target = emotion.target
         target.motivation -= math.ceil((attack.power * 1 + ((effectiveness / target.resilience) / 100)))
 
-    # todo show animation
-    def show_animation(self):
-        pass
-
-    # todo have enemy select an attack and target
     def select_enemy_attack(self, enemy):
         enemy.attack = random.choice(enemy.learned_moves)
 

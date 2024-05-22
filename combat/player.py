@@ -1,16 +1,16 @@
 # todo create a framework of what emotions will look like
 import combat.moves
-"""
-stats:
-    motivation (hp)
-    effectiveness? (attack)
-    resilience (defense)
-    typing
-"""
 import pygame
 from combat.emotions import Emotion
 from start.button import Button
 
+"""
+stats:
+    motivation (hp)
+    effectiveness (attack)
+    resilience (defense)
+    typing
+"""
 
 class PlayerEmotion(Emotion):
     def __init__(self, name, image_path):
@@ -43,12 +43,14 @@ class PlayerEmotion(Emotion):
 # example of what an initialized emotion will look like
 anger = PlayerEmotion("Anger", "Assets/AngerBull.png")
 anger.initialize_emotion("Anger", 30, 50, 10, 7, "anger", 1,
-                        [combat.moves.punch], [])
+                        [combat.moves.punch, combat.moves.heal, combat.moves.idk, combat.moves.something],
+                         [])
 
 # # # happiness
 happiness = PlayerEmotion("Happiness", "Assets/HappyDog.png")
 happiness.initialize_emotion("Happiness", 30, 30, 10, 3, "joy", 1,
-                              [combat.moves.punch], [])
+                              [combat.moves.punch, combat.moves.heal, combat.moves.idk, combat.moves.something],
+                             [])
 # embarrassment
 
 

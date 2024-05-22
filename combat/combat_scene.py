@@ -34,7 +34,6 @@ class CombatScene(GenericScene):
 
 
     def game_body_loop(self) -> None:
-        print(self.player_info.emotions)
         if not self.initialized:
             self.initialze()
 
@@ -53,11 +52,18 @@ class CombatScene(GenericScene):
             attack_queue = {}
             speed_queue = []
             for emotion in self.combat.emotions + self.combat.enemies:
+                print("PROCESSING EFFECTS")
+                self.combat.process_effects(emotion)
+                self.combat.display_combat_info()
+
+            for emotion in self.combat.emotions + self.combat.enemies:
                 attack_queue[emotion.speed] = emotion
                 speed_queue.append(emotion.speed)
             speed_queue.sort()
 
-            print("WE ARE NOW PROCESSING THE ATTACKS")
+
+            print("PROCESSING ATTACKS")
+
             # todo add an attack order queue if we decide to add speed as a mechanic
             for speed_value in speed_queue:
                 # grab the actual emotion based off the speed value

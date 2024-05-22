@@ -15,13 +15,18 @@ class Emotion:
         self.name = name
         self.image_path = image_path
         self.motivation = 100
-        self.max_motivation = self.motivation
         self.effectiveness = 0
         self.resilience = 1
         self.speed = 0
+        self.max_motivation = self.motivation
+        self.base_effectiveness = self.effectiveness
+        self.base_resilience = self.resilience
+        self.base_speed = self.speed
+        self.active_effects = []
         self.typing = ""
         self.level = 1
         self.experience_factor = 0
+        self.learnable_moves = []
         self.learned_moves = []
 
 
@@ -41,19 +46,34 @@ class Emotion:
         """
         self.name = name
         self.motivation = motivation
-        self.max_motivation = self.motivation
         self.effectiveness = effectiveness
         self.resilience = resilience
         self.speed = speed
+
+        self.max_motivation = self.motivation
+        self.base_effectiveness = self.effectiveness
+        self.base_resilience = self.resilience
+        self.base_speed = self.speed
+
         self.typing = typing
         self.experience_factor = experience_factor
         self.learned_moves = learned_moves
         self.learnable_moves = learnable_moves
 
-
     def draw(self, display):
         # draw the emotion here
         pass
-    
+
+    def change_stat(self, stat, value):
+        match stat:
+            case "health":
+                self.motivation = value
+            case "attack":
+                self.effectiveness = value
+            case "defense":
+                self.resilience = value
+            case "speed":
+                self.speed = value
+
     def reset(self):
         self.motivation = self.max_motivation

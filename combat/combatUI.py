@@ -98,9 +98,11 @@ class CombatUI:
                 else:
                     # todo play no no noise here
                     self.selected_attack = "unvalid"
+
             if button.hover and not self.currently_hovering[i]:
                 button.set_new_image(self.move_hover)
                 self.currently_hovering[i] = True
+
             if not button.hover and self.currently_hovering[i]:
                 button.set_new_image(self.move_button_image)
                 self.currently_hovering[i] = False
@@ -112,8 +114,14 @@ class CombatUI:
             self.display.blit(text_surface, text_rect)
 
         # select enemy if an attack is selected
-        if self.selected_attack != None and self.selected_attack != "unvalid":
-            self.enemy.button_activated = True
+        if self.selected_attack is not None and self.selected_attack != "unvalid":
+            if self.selected_attack.target == "self":
+                self.player.target = self.player
+                self.player.attack = self.selected_attack
+                self.current_phase = "start_attack"
+
+            else:
+                self.enemy.button_activated = True
 
             if self.enemy.button.hover:
                 pass
@@ -154,8 +162,6 @@ class CombatUI:
         # TODO has to be called somewhere in combat before a new attack cycle begins
         self.selected_attack = None
         self.current_phase = "idle"
-        
-
 
     def draw_attack_overlay(self, attacks):
         # overlay
@@ -169,13 +175,9 @@ class CombatUI:
         for i, button in enumerate(self.move_buttons):
             button.draw(self.display)
 
-
     def draw_emotions(self):
         # only print emotions when they are alive
-        print(self.player.motivation)
         if self.player.motivation > 0:
             self.player.draw(self.display)
         if self.enemy.motivation > 0:
             self.enemy.draw(self.display)
-
-
