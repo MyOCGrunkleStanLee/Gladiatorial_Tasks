@@ -17,8 +17,9 @@ class SelectStarterScene(GenericScene):
         self.text_surface = my_font.render('Select Starter', False, (0, 0, 0))
 
         happiness_image = pygame.image.load(
-            "Assets/ChooseTaskScreenLargeSquare.png"
-        )  # placeholder
+            "Assets/HappyDog.png"
+        )
+        happiness_image = pygame.transform.scale(happiness_image, (100, 100))
         self.starter_option = StarterOption(
             self.display, 560, 100, happiness_image, "Happiness"
         )
