@@ -39,6 +39,7 @@ class SelectTaskScene(GenericScene):
             self.currently_hovering = False
 
         if self.exercise_button.activated:
+            self.game_state_object.reset = True
             self.game_state_object.current_state = "planning"
 
         # draw

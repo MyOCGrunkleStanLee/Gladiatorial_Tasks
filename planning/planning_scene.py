@@ -57,6 +57,10 @@ class PlanningScene(GenericScene):
             self.task_buttons.append(created_button)
 
     def game_body_loop(self) -> None:
+        if self.game_state_object.reset is True:
+            self.player_info.selected_tasks = None
+            self.create_components()
+            self.game_state_object.reset = False
 
         for index, button in enumerate(self.task_buttons):
             if button.activated:
