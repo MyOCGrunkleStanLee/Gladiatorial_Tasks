@@ -11,6 +11,8 @@ from start.task_scene import TaskScene
 from utilities.game_state_object import GameStateObject
 from utilities.player_info import Player
 from combat.task_complete_screen import TaskComplete
+from combat.win_screen import WinScreen
+from combat.lose_screen import LoseScreen
 
 # final vars
 WIDTH, HEIGHT = 1280, 620
@@ -33,6 +35,8 @@ def start_game():
         "planning": PlanningScene(screen, game_state, player_info),
         "select_starter": SelectStarterScene(screen, game_state, player_info),
         "combat": CombatScene(screen, game_state, player_info),
+        "win": WinScreen(screen, game_state, player_info),
+        "lose": LoseScreen(screen, game_state, player_info),
         "task_scene": TaskScene(screen, game_state, player_info),
         "do_it_irl": DoItIRLScene(screen, game_state, player_info),
     }

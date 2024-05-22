@@ -87,7 +87,7 @@ class CombatScene(GenericScene):
                     self.combat.emotions.remove(emotion)
                 self.reset()
                 # todo display a you lose screen and have the player try again or maybe move on anyways?
-                self.game_state_object.current_state = "select_starter"
+                self.game_state_object.current_state = "lose"
 
             elif win is True:
                 print("YOU WIN")
@@ -96,7 +96,7 @@ class CombatScene(GenericScene):
                 self.ui_finished = False
                 self.reset()
                 # todo display a you won screen and give experience
-                self.game_state_object.current_state = "do_it_irl"
+                self.game_state_object.current_state = "win"
 
             else:
                 # after calculating reset ui so cycle can continue (assuming that no win/loose condition)
