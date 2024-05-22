@@ -24,5 +24,5 @@ class WinScreen(GenericScene):
 
         # change game state on click
         if self.next_button.activated:
-          self.game_state_object.current_state = "combat"
+          self.game_state_object.current_state = "do_it_irl"
           
