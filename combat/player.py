@@ -21,7 +21,7 @@ class PlayerEmotion(Emotion):
         self.enemy = False
 
         self.image = pygame.image.load(self.image_path)
-        self.button = Button(None, 400, 500, self.image, 1, positioning="bottomleft")
+        self.button = Button(None, 230, 550, self.image, 1, positioning="bottomleft")
 
 
     def teach_move(self, move: object):

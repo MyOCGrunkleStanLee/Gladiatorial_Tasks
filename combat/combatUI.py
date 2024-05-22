@@ -26,26 +26,30 @@ class CombatUI:
 
         # overlay
         self.overlay_img = pygame.image.load("Assets/CombatMoveOverlay.png")
-        x_overlay, y_overlay = 838 , 405
-        self.overlay_rect = self.overlay_img.get_rect(topleft=(x_overlay, y_overlay))
+        self.x_overlay, self.y_overlay = 838 , 405
+        self.overlay_rect = self.overlay_img.get_rect(topleft=(self.x_overlay, self.y_overlay))
 
         # get rects for each attack
-        self.attack_rects = [pygame.Rect(x_overlay, y_overlay, 211, 70),
-                 pygame.Rect(x_overlay+221, y_overlay, 211, 70),
-                 pygame.Rect(x_overlay, y_overlay+80, 211, 70),
-                 pygame.Rect(x_overlay+221, y_overlay+80, 211, 70)]
+        self.attack_rects = [pygame.Rect(self.x_overlay, self.y_overlay, 211, 70),
+                 pygame.Rect(self.x_overlay+221, self.y_overlay, 211, 70),
+                 pygame.Rect(self.x_overlay, self.y_overlay+80, 211, 70),
+                 pygame.Rect(self.x_overlay+221, self.y_overlay+80, 211, 70)]
 
         # buttons for move menu
-        img = pygame.image.load("Assets/TransparentForMoveButton.png")
-        self.move_buttons = [Button(self.display, self.attack_rects[0].x, self.attack_rects[0].y, img, 1, positioning="topleft"),
-                        Button(self.display, self.attack_rects[1].x, self.attack_rects[1].y, img, 1, positioning="topleft"),
-                        Button(self.display, self.attack_rects[2].x, self.attack_rects[2].y, img, 1, positioning="topleft"),
-                        Button(self.display, self.attack_rects[3].x, self.attack_rects[3].y, img, 1, positioning="topleft")]
+        self.move_button_image = pygame.image.load("Assets/TransparentForMoveButton.png")
+        self.move_buttons = [Button(self.display, self.attack_rects[0].x, self.attack_rects[0].y, self.move_button_image, 1, positioning="topleft"),
+                        Button(self.display, self.attack_rects[1].x, self.attack_rects[1].y, self.move_button_image, 1, positioning="topleft"),
+                        Button(self.display, self.attack_rects[2].x, self.attack_rects[2].y, self.move_button_image, 1, positioning="topleft"),
+                        Button(self.display, self.attack_rects[3].x, self.attack_rects[3].y, self.move_button_image, 1, positioning="topleft")]
         
         # attack button
-        attack_button_image = pygame.image.load("Assets/NextButton.png").convert_alpha()
-        self.attack_button = Button(self.display, 800, 450, attack_button_image, 1)
-        self.back_button = Button(self.display, 800, 550, attack_button_image, 1)
+        attack_button_image = pygame.image.load("Assets/FightOverlayScreen.png").convert_alpha()
+        back_button_image = pygame.image.load("Assets/BackButton.png").convert_alpha()
+        self.attack_button = Button(self.display, self.x_overlay+5, self.y_overlay+10, attack_button_image, 1, positioning="topleft")
+        self.back_button = Button(self.display, 780, 490, back_button_image, 1)
+
+        self.move_hover = pygame.image.load("Assets/CombatMoveDarkOverlay.png")
+        self.currently_hovering = [False, False, False, False]
 
 
 
@@ -71,9 +75,8 @@ class CombatUI:
         self.player.button_activated = True
 
         if self.player.button.hover:
-            # TODO set hover overlay
-            # self.player.button.set_new_image()
             pass
+            
 
         if self.player.button.clicked:
             # change state, open menu
@@ -94,15 +97,28 @@ class CombatUI:
                     print(self.selected_attack.name)
                 else:
                     # todo play no no noise here
-                    print("index out of range")
+                    self.selected_attack = "unvalid"
+            if button.hover and not self.currently_hovering[i]:
+                button.set_new_image(self.move_hover)
+                self.currently_hovering[i] = True
+            if not button.hover and self.currently_hovering[i]:
+                button.set_new_image(self.move_button_image)
+                self.currently_hovering[i] = False
+
+        if self.selected_attack == "unvalid":
+            font = pygame.font.SysFont(None, 20)
+            text_surface = font.render("Pick a move!", True, (255, 255, 255))
+            text_rect = text_surface.get_rect(topleft=(self.x_overlay, self.y_overlay-30))
+            self.display.blit(text_surface, text_rect)
 
         # select enemy if an attack is selected
-        if self.selected_attack != None:
+        if self.selected_attack != None and self.selected_attack != "unvalid":
             self.enemy.button_activated = True
 
             if self.enemy.button.hover:
-                # TODO hover animation
                 pass
+                #self.player.button.set_new_image(self.move_hover)
+            
 
             if self.enemy.button.activated:
                 # store data about attack
