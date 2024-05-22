@@ -40,7 +40,7 @@ def start_game():
         "task_scene": TaskScene(screen, game_state, player_info),
         "do_it_irl": DoItIRLScene(screen, game_state, player_info),
     }
-    game_state.current_state = "start"
+    game_state.current_state = "select_task"
     
 
     # this is the main game loop

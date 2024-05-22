@@ -32,7 +32,7 @@ class DoItIRLScene(GenericScene):
         # position of components
         self.start_button_pos = (self.WIDTH//2-100, 200)
         self.finish_button_pos = (self.WIDTH//2+100, 200)
-        self.instruction_pos = (self.WIDTH/2, 400)
+        self.instruction_pos = (self.WIDTH/2, 300)
         self.timer_pos = (self.WIDTH//2, 70)
         #-------------------------------------------------#
 
@@ -71,7 +71,7 @@ class DoItIRLScene(GenericScene):
         
         # create the instruction image based on the taskid
         task_to_display = self.player_info.selected_tasks[self.player_info.current_task]
-        text_surface = self.font.render(task_to_display, True, (255, 255, 255))
+        text_surface = self.font.render(task_to_display, True, (0, 0, 0))
         text_rect = text_surface.get_rect(center=(self.instruction_pos[0], self.instruction_pos[1]))
         
 
