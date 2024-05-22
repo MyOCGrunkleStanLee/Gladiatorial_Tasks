@@ -41,13 +41,13 @@ class PlayerEmotion(Emotion):
 
 # anger
 # example of what an initialized emotion will look like
-anger = PlayerEmotion("Anger", "Assets/SmallGoldSquare.png")
+anger = PlayerEmotion("Anger", "Assets/AngerBull.png")
 anger.initialize_emotion("Anger", 30, 50, 10, 7, "anger", 1,
                         [combat.moves.punch], [])
 
 # # # happiness
-happiness = PlayerEmotion("Happiness", "Assets/SmallGoldSquare.png")
-happiness.initialize_emotion("Happiness", 30, 50, 10, 3, "joy", 1,
+happiness = PlayerEmotion("Happiness", "Assets/HappyDog.png")
+happiness.initialize_emotion("Happiness", 30, 30, 10, 3, "joy", 1,
                               [combat.moves.punch], [])
 # embarrassment
 

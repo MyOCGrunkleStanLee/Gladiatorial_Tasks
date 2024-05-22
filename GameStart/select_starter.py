@@ -42,12 +42,8 @@ class SelectStarterScene(GenericScene):
 
         # change game state on click
         if self.starter_button.activated:
-            self.next_screen()
-
-    def next_screen(self):
-        if not self.selected_starter:
-            return
-
-        #hardcoded happiness passed
-        self.player_info.add_emotion(combat.player.happiness)
-        self.game_state_object.current_state = "combat"
+          # temp
+          combat.player.happiness.reset()   
+          self.player_info.add_emotion(combat.player.happiness)
+          self.game_state_object.current_state = "combat"
+          

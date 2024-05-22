@@ -15,6 +15,7 @@ class Emotion:
         self.name = name
         self.image_path = image_path
         self.motivation = 100
+        self.max_motivation = self.motivation
         self.effectiveness = 0
         self.resilience = 1
         self.speed = 0
@@ -40,6 +41,7 @@ class Emotion:
         """
         self.name = name
         self.motivation = motivation
+        self.max_motivation = self.motivation
         self.effectiveness = effectiveness
         self.resilience = resilience
         self.speed = speed
@@ -52,3 +54,6 @@ class Emotion:
     def draw(self, display):
         # draw the emotion here
         pass
+    
+    def reset(self):
+        self.motivation = self.max_motivation
