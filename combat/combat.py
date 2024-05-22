@@ -30,31 +30,6 @@ class Combat:
         for i in range(number - len(opponents)):
             self.enemies.append(randomly_select_enemy())
 
-    def change_phase(self, phase):
-        """
-        changes the phase of combat which will change what behaviors will be active in the combat scene
-        phases of combat go as follows
-        start: the default phase this phase is all the set-up like generating enemies
-        select_attack: in this phase the player will select a move and the enemies will also automatically select a move (for now it's random)
-        select_target: in this phase the player will select a valid target (all moves have enemies as valid targets r now) the enemies will do the same (also at random)
-        process_attack: in this phase the combat engine will do math and update values on the emotions
-        show_animation: this phase will show flashy colors based on moves later for now skip
-        clean_up: this phase checks if a win or loss scenario has happened and does clean up (like removing dead enemies)
-        end: ends combat and switches back to do_it_irl
-
-        :param phase: the phase you want to switch combat to
-        :return: None
-        """
-        self.phase = phase
-
-    # todo we need to get the user to select a move for each of their emotions
-    def select_attack(self):
-        pass
-
-    # todo have the user select a target to attack
-    def select_valid_targets(self):
-        pass
-
     # todo process the attack
     def process_attack(self, emotion):
         print("PROCESSING AN ATTACK")
@@ -75,12 +50,19 @@ class Combat:
     def select_enemy_target(self, enemy, targets: list):
         enemy.target = random.choice(targets)
 
-    def clean_emotion(self, emotion):
-        self.emotions.remove(emotion)
-
-    def clean_enemies(self, enemy):
-        self.enemies.remove(enemy)
-
     # todo inform the player of the outcome
     def display_combat_info(self):
-        pass
+        print(self.enemies)
+        print("Enemies stats:")
+        for enemy in self.enemies:
+            print(f"name: {enemy.name}")
+            print(f"Motivation: {enemy.motivation}")
+            print(f"Effectiveness: {enemy.effectiveness}")
+            print(f"Speed: {enemy.speed}")
+        print("Player Emotions Stats:")
+        for emotion in self.emotions:
+            print(f"name: {emotion.name}")
+            print(f"Motivation: {emotion.motivation}")
+            print(f"Effectiveness: {emotion.effectiveness}")
+            print(f"Speed: {emotion.speed}")
+
