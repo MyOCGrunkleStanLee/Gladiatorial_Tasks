@@ -10,7 +10,7 @@ class LoseScreen(GenericScene):
 
     def create_components(self):
         start_img = pygame.image.load("Assets/NextButton.png").convert_alpha()
-        self.next_button = Button(self.display, self.WIDTH / 2, 500, start_img, 2)
+        self.next_button = Button(self.display, 1000, 500, start_img, 2)
 
 
     def game_body_loop(self):
@@ -24,5 +24,5 @@ class LoseScreen(GenericScene):
 
         # change game state on click
         if self.next_button.activated:
-          self.game_state_object.current_state = "combat"
+          self.game_state_object.current_state = "select_starter"
           
