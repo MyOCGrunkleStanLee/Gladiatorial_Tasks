@@ -29,6 +29,22 @@ class PlanningScene(GenericScene):
             '10 Burpees',
         ]
 
+        # task string image file paths
+        self.task_image_path = [
+            "Assets/ExerciseWords/PushUps.png",
+            "Assets/ExerciseWords/PullUps.png",
+            "Assets/ExerciseWords/Plank.png",
+            "Assets/ExerciseWords/SitUps.png",
+            "Assets/ExerciseWords/Squats.png",
+            "Assets/ExerciseWords/Crunches.png",
+            "Assets/ExerciseWords/Lunges.png",
+            "Assets/ExerciseWords/HighKnees.png",
+            "Assets/ExerciseWords/Rows.png",
+            "Assets/ExerciseWords/CalfRaises.png",
+            "Assets/ExerciseWords/JumpingJacks.png",
+            "Assets/ExerciseWords/Burpees.png"
+        ]
+
         # (x, y) coordinate tules based on topleft positioning
         self.task_positions = [
             (615, 75),
@@ -44,6 +60,16 @@ class PlanningScene(GenericScene):
             (940, 388),
             (940, 465),
         ]
+
+        self.excercise_positions = [
+            (260, 170),
+            (260, 220),
+            (260, 270),
+            (260, 320),
+            (260, 370)
+        ]
+
+        self.excercise_images: list[pygame.Surface] = []
 
         self.bordered_task = pygame.image.load(
             "planning/border_task.png"
@@ -79,6 +105,9 @@ class PlanningScene(GenericScene):
 
         for coordinate in self.coordinates_to_cover:
             self.display.blit(self.cover_task_image, coordinate)
+        
+        for index, item in enumerate(self.excercise_images):
+            self.display.blit(item, self.excercise_positions[index])
 
     def next_screen(self) -> None:
         self.player_info.selected_tasks = self.selected_tasks
@@ -98,4 +127,8 @@ class PlanningScene(GenericScene):
 
         # add coordinate to cover
         self.coordinates_to_cover.append(self.task_positions[task_index])
+
+        # add image to list
+        text_image = pygame.image.load(self.task_image_path[task_index])
+        self.excercise_images.append(text_image)
         
