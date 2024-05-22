@@ -51,6 +51,12 @@ class CombatUI:
         self.move_hover = pygame.image.load("Assets/CombatMoveDarkOverlay.png")
         self.currently_hovering = [False, False, False, False]
 
+        self.happiness_hover = pygame.image.load("Assets/HappyHover.png")
+        self.currently_hovering_player = False
+
+        self.frustration_hover = pygame.image.load("Assets/FrustrationHover.png")
+        self.currently_hovering_enemy = False
+
 
 
     def update(self):
@@ -65,8 +71,8 @@ class CombatUI:
             case "start_attack":
                 finished = self.start_attack()
                 if finished == "undo":
-                    self.selected_attack = None
-                    self.current_phase = "select_attack"
+                    self.reset_ui()
+                    finished = False
         return finished
 
 
@@ -74,8 +80,12 @@ class CombatUI:
         # activate the player button
         self.player.button_activated = True
 
-        if self.player.button.hover:
-            pass
+        if self.player.button.hover and not self.currently_hovering_player:
+            self.player.button.set_new_image(self.happiness_hover)
+            self.currently_hovering_player = True
+        if not self.player.button.hover and self.currently_hovering_player:
+            self.player.button.set_new_image(self.player.image)
+            self.currently_hovering_player = False
             
 
         if self.player.button.clicked:
@@ -98,11 +108,9 @@ class CombatUI:
                 else:
                     # todo play no no noise here
                     self.selected_attack = "unvalid"
-
             if button.hover and not self.currently_hovering[i]:
                 button.set_new_image(self.move_hover)
                 self.currently_hovering[i] = True
-
             if not button.hover and self.currently_hovering[i]:
                 button.set_new_image(self.move_button_image)
                 self.currently_hovering[i] = False
@@ -114,18 +122,20 @@ class CombatUI:
             self.display.blit(text_surface, text_rect)
 
         # select enemy if an attack is selected
-        if self.selected_attack is not None and self.selected_attack != "unvalid":
+        if self.selected_attack != None and self.selected_attack != "unvalid":
             if self.selected_attack.target == "self":
                 self.player.target = self.player
                 self.player.attack = self.selected_attack
                 self.current_phase = "start_attack"
-
             else:
                 self.enemy.button_activated = True
 
-            if self.enemy.button.hover:
-                pass
-                #self.player.button.set_new_image(self.move_hover)
+            if self.enemy.button.hover and not self.currently_hovering_enemy:
+                self.enemy.button.set_new_image(self.frustration_hover)
+                self.currently_hovering_enemy = True
+            if not self.enemy.button.hover and self.currently_hovering_enemy:
+                self.enemy.button.set_new_image(self.enemy.image)
+                self.currently_hovering_enemy = False
             
 
             if self.enemy.button.activated:
@@ -143,11 +153,15 @@ class CombatUI:
         finished = False
         if self.attack_button.activated:
             self.attack_button.activated = False
+            self.enemy.button.set_new_image(self.enemy.image)
+            self.player.button.set_new_image(self.player.image)
             print("going forward")
             return True
 
         if self.back_button.activated:
             self.back_button.activated = False
+            self.enemy.button.set_new_image(self.enemy.image)
+            self.player.button.set_new_image(self.player.image)
             print("undoing")
             return "undo"
 
@@ -159,9 +173,10 @@ class CombatUI:
         return finished
 
     def reset_ui(self):
-        # TODO has to be called somewhere in combat before a new attack cycle begins
         self.selected_attack = None
         self.current_phase = "idle"
+        
+
 
     def draw_attack_overlay(self, attacks):
         # overlay
@@ -175,8 +190,10 @@ class CombatUI:
         for i, button in enumerate(self.move_buttons):
             button.draw(self.display)
 
+
     def draw_emotions(self):
         # only print emotions when they are alive
+        print(self.player.motivation)
         if self.player.motivation > 0:
             self.player.draw(self.display)
         if self.enemy.motivation > 0:
