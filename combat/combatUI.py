@@ -60,7 +60,6 @@ class CombatUI:
             case "select_attack":
                 self.select_attack(self.player.learned_moves)
             case "start_attack":
-                print("heehehehheh")
                 finished = self.start_attack()
                 if finished == "undo":
                     self.selected_attack = None
@@ -118,7 +117,6 @@ class CombatUI:
         self.draw_attack_overlay(attacks)
 
     def start_attack(self):
-        print("jey")
         finished = False
         if self.attack_button.activated:
             self.attack_button.activated = False

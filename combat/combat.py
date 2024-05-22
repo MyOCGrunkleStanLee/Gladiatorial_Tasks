@@ -57,14 +57,12 @@ class Combat:
 
     # todo process the attack
     def process_attack(self, emotion):
+        print("PROCESSING AN ATTACK")
         # todo program type advantages and disadvantages
-        print(emotion.attack.power)
         attack = emotion.attack
-        print(emotion.effectiveness)
         effectiveness = emotion.effectiveness
-        print(emotion.target.resilience)
         target = emotion.target
-        target.motivation -= math.ceil((attack.power * (1 + effectiveness / 100) * (attack.power / target.resilience)))
+        target.motivation -= math.ceil((attack.power * 1 + ((effectiveness / target.resilience) / 100)))
 
     # todo show animation
     def show_animation(self):

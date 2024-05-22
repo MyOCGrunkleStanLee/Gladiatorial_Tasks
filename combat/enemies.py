@@ -25,7 +25,7 @@ class EnemyEmotion(Emotion):
 
 # frustration
 Frustration = EnemyEmotion("Frustration", "Assets/LargeGoldSquare.png")
-Frustration.initialize_emotion("frustration", 10, 50, 3, 5, "anger",
+Frustration.initialize_emotion("frustration", 40, 50, 3, 5, "anger",
                              5, [combat.moves.punch], [])
 # procrastination
 # distraction

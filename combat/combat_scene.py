@@ -56,27 +56,35 @@ class CombatScene(GenericScene):
             for speed_value in speed_queue:
                 # grab the actual emotion based off the speed value
                 emotion = attack_queue.get(speed_value)
+
                 # if their health is greater than 0 we process their attack
                 if emotion.motivation >= 0:
                     self.combat.process_attack(emotion)
 
                 # if their target hp hits 0 we remove them
                 if emotion.target.motivation <= 0:
-                    if emotion.enemy:
-                        self.combat.clean_enemies(emotion)
-                    else:
-                        self.combat.clean_emotion(emotion)
-
-            # after calculating reset ui so cycle can continue (assuming that no win/loose condition)
-            self.ui.reset_ui()
-            self.ui_finished = False
+                    try:
+                        self.combat.emotions.remove(emotion.target)
+                    except ValueError:
+                        self.combat.enemies.remove(emotion.target)
 
             if len(self.combat.emotions) == 0:
                 print("YOU LOSE")
+                # after calculating reset ui so cycle can continue (assuming that no win/loose condition)
+                self.ui.reset_ui()
+                self.ui_finished = False
                 # todo display a you lose screen and have the player try again or maybe move on anyways?
                 self.game_state_object.current_state = "select_starter"
 
             elif len(self.combat.enemies) == 0:
                 print("YOU WIN")
+                # after calculating reset ui so cycle can continue (assuming that no win/loose condition)
+                self.ui.reset_ui()
+                self.ui_finished = False
                 # todo display a you won screen and give experience
                 self.game_state_object.current_state = "do_it_irl"
+
+            else:
+                # after calculating reset ui so cycle can continue (assuming that no win/loose condition)
+                self.ui.reset_ui()
+                self.ui_finished = False
