@@ -30,7 +30,7 @@ class PlanningScene(GenericScene):
         ]
 
         # (x, y) coordinate tules based on topleft positioning
-        task_positions = [
+        self.task_positions = [
             (615, 75),
             (615, 155),
             (615, 225),
@@ -49,8 +49,14 @@ class PlanningScene(GenericScene):
             "planning/border_task.png"
         ).convert_alpha()
 
+        self.cover_task_image = pygame.image.load(
+            "planning/cover-task-image.png"
+        ).convert_alpha()
+
+        self.coordinates_to_cover: list[tuple[int, int]] = []
+
         self.task_buttons = []
-        for x_position, y_position in task_positions:
+        for x_position, y_position in self.task_positions:
             created_button = Button(
                 self.display, x_position, y_position, self.bordered_task, 1, "topleft"
             )
@@ -71,6 +77,9 @@ class PlanningScene(GenericScene):
         for button in self.task_buttons:
             button.draw(self.display)
 
+        for coordinate in self.coordinates_to_cover:
+            self.display.blit(self.cover_task_image, coordinate)
+
     def next_screen(self) -> None:
         self.player_info.selected_tasks = self.selected_tasks
         self.game_state_object.current_state = "select_starter"
@@ -86,3 +95,7 @@ class PlanningScene(GenericScene):
         if len(self.selected_tasks) == 5:
             self.next_screen()
             return
+
+        # add coordinate to cover
+        self.coordinates_to_cover.append(self.task_positions[task_index])
+        
