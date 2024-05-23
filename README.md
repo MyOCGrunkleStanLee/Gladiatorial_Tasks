@@ -34,7 +34,7 @@ Make sure your environment is set up correctly
 - In your terminal, navigate to the downloaded folder. Then run the following command:
     - Windows: `py main.py`
     - Unix/macOS: `python3 main.py`
-
+- To run the game just click the application .exe file and if everything is correct the game should run 
 ---
 
 ## Problem being addressed
