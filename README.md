@@ -1,6 +1,9 @@
 # Gladitorial_Tasks
 A game where emotions battle it out and you get to be productive.
 
+## Quick run instructions
+Download this [project as a ZIP](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives). After extracting, run GladiatorialTasks.exe.
+
 ## Table of contents
 - [Environment](#environment)
 - [How to run](#how-to-run)
