@@ -40,5 +40,21 @@ Make sure your environment is set up correctly
 ## Problem being addressed
 
 ---
+The main goal of this project was to create
+a fun and rewarding way for players to complete
+tasks that they may want to do. 
 
 ## Features
+
+---
+- Task selection
+    - allows user to select a task
+    - forces user to break the task down into 5 easy steps
+    - as the user completes the tasks they get to take a quick break by playing the combat system
+- variable moves and emotions to choose from
+- Combat system 
+  - move selection
+  - status effects
+  - move confirmation
+  - capability to be expanded to a 3v3 format in the future
+
