@@ -24,11 +24,11 @@ heal.initialize_move("Heal", "heals target", 0)
 heal.target = "self"
 heal.special_effects.append(Effect("Heal", 10, 0, "health"))
 
-idk = Move()
-idk.initialize_move("IDK", "buffs user attack by 50% for 3 turns", 0)
-idk.special_effects.append(Effect("IDK", 150, 4, "attack"))
-idk.target = "self"
+clarity = Move()
+clarity.initialize_move("Clarity", "buffs user attack by 50% for 3 turns", 0)
+clarity.special_effects.append(Effect("Clarity", 150, 4, "attack"))
+clarity.target = "self"
 
-something = Move()
-something.initialize_move("Something", "debuffs targets attack by 50% for 3 turns", 0)
-something.special_effects.append(Effect("Something", 50, 4, "attack"))
+gaslight = Move()
+gaslight.initialize_move("Gaslight", "debuffs targets attack by 50% for 3 turns", 0)
+gaslight.special_effects.append(Effect("Gaslight", 50, 4, "attack"))
